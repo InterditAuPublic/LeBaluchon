@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B05564C82A03F9EC001C81D1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05564C72A03F9EC001C81D1 /* AppDelegate.swift */; };
 		B05564CA2A03F9EC001C81D1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05564C92A03F9EC001C81D1 /* SceneDelegate.swift */; };
-		B05564CC2A03F9EC001C81D1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05564CB2A03F9EC001C81D1 /* ViewController.swift */; };
 		B05564CF2A03F9EC001C81D1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B05564CD2A03F9EC001C81D1 /* Main.storyboard */; };
 		B05564D12A03F9ED001C81D1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B05564D02A03F9ED001C81D1 /* Assets.xcassets */; };
 		B05564D42A03F9ED001C81D1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B05564D22A03F9ED001C81D1 /* LaunchScreen.storyboard */; };
@@ -44,7 +43,6 @@
 		B05564C42A03F9EC001C81D1 /* Le Baluchon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Le Baluchon.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B05564C72A03F9EC001C81D1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B05564C92A03F9EC001C81D1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		B05564CB2A03F9EC001C81D1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B05564CE2A03F9EC001C81D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B05564D02A03F9ED001C81D1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B05564D32A03F9ED001C81D1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -113,7 +111,6 @@
 				B05564F92A03FC49001C81D1 /* Controller */,
 				B05564F82A03FC44001C81D1 /* Model */,
 				B05564F72A03FC3F001C81D1 /* View */,
-				B05564CB2A03F9EC001C81D1 /* ViewController.swift */,
 				B05564D52A03F9ED001C81D1 /* Info.plist */,
 				B05565012A040074001C81D1 /* Keys.plist */,
 			);
@@ -306,7 +303,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B05564CC2A03F9EC001C81D1 /* ViewController.swift in Sources */,
 				B05565042A0400FF001C81D1 /* CurrencyConverter.swift in Sources */,
 				B05564FE2A03FD87001C81D1 /* WeatherViewController.swift in Sources */,
 				B05564FC2A03FD76001C81D1 /* CurrencyViewController.swift in Sources */,
