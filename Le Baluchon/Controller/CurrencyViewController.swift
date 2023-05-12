@@ -55,6 +55,9 @@ class CurrencyViewController: UIViewController {
     @IBAction func onConvertTapped(_ sender: UIButton) {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
+        
+        
+        
         amountTextField.resignFirstResponder()
         currencyCodeTextField.resignFirstResponder()
         
@@ -82,30 +85,31 @@ class CurrencyViewController: UIViewController {
     }
     
     @IBAction func getRateTapped(_ sender: UIButton) {
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-
+        
+        getRate.setTitle("Loading", for: .normal)
+        getRate.configuration?.showsActivityIndicator = true
+        
         amountTextField.resignFirstResponder()
         currencyCodeTextField.resignFirstResponder()
         
         guard let amountText = amountTextField.text,
               let amount = Double(amountText)
         else {
-            activityIndicator.stopAnimating()
-            activityIndicator.isHidden = true
             usdAmountLabel.text = "Error"
+            getRate.setTitle("Get", for: .normal)
+            getRate.configuration?.showsActivityIndicator = false
             return
         }
         
         currencyConverter.convert(amount: amount) { usdAmount in
-            DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
-                self.activityIndicator.isHidden = true
+            DispatchQueue.main.async { [self] in
+                getRate.setTitle("Get", for: .normal)
+                getRate.configuration?.showsActivityIndicator = false
                 guard let usdAmount = usdAmount else {
-                    self.usdAmountLabel.text = "Error"
+                    usdAmountLabel.text = "Error"
                     return
                 }
-                self.usdAmountLabel.text = "\(usdAmount) USD"
+                usdAmountLabel.text = "\(usdAmount) USD"
             }
         }
     }
