@@ -55,9 +55,6 @@ class CurrencyViewController: UIViewController {
     @IBAction func onConvertTapped(_ sender: UIButton) {
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        
-        
-        
         amountTextField.resignFirstResponder()
         currencyCodeTextField.resignFirstResponder()
         
@@ -85,17 +82,15 @@ class CurrencyViewController: UIViewController {
     }
     
     @IBAction func getRateTapped(_ sender: UIButton) {
-        
         getRate.setTitle("Loading", for: .normal)
         getRate.configuration?.showsActivityIndicator = true
-        
         amountTextField.resignFirstResponder()
         currencyCodeTextField.resignFirstResponder()
         
         guard let amountText = amountTextField.text,
               let amount = Double(amountText)
         else {
-            usdAmountLabel.text = "Error"
+            usdAmountLabel.text = "Oops, you must provide an Amount value"
             getRate.setTitle("Get", for: .normal)
             getRate.configuration?.showsActivityIndicator = false
             return
