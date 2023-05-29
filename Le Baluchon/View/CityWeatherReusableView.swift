@@ -68,6 +68,6 @@ class CityWeatherReusableView: UIView {
         weatherIcon.image = weather.weather.first?.iconImage
         sunriseIcon.image = UIImage(systemName: "sunrise")
         sunsetIcon.image = UIImage(systemName: "sunset")
-        windIcon.image = UIImage(systemName: "wind")
+        windIcon.image = UIImage(systemName: "wind.circle")
     }
 }

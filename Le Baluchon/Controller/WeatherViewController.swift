@@ -41,6 +41,11 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         pageControl.numberOfPages = 2
         pageControl.currentPageIndicatorTintColor = .white
         pageControl.pageIndicatorTintColor = .gray
+
+        pageControl.center = CGPoint(x: scrollView.frame.size.width / 2, y: scrollView.frame.size.height - 50)
+        
+
+       
         
         city1View.cityReusableView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
         city1View.cityReusableView.backgroundColor = .red
