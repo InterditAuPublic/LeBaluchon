@@ -57,8 +57,8 @@ class TranslationServiceImplementation: TranslationService {
     var task: URLSessionDataTask?
     var session = URLSession(configuration: .default)
     var translation: Translation?
-    var accessKey = String()
-    var baseURL = String()
+    private let accessKey: String
+    private let baseURL: String
 
     init(session: URLSession = URLSession(configuration: .default)) {
         self.session = session
@@ -73,7 +73,6 @@ class TranslationServiceImplementation: TranslationService {
     }
 
     func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void) {
-//       print("getTranslation")
         print("\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)")
         guard let url = URL(string: "\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)") else {
             callback(false, nil)
@@ -98,9 +97,13 @@ class TranslationServiceImplementation: TranslationService {
                     callback(false, nil)
                     return
                 }
-                let translationResponse = TranslationResponse(translatedText: responseJSON.data.translations[0].translatedText)
+                guard let text = responseJSON.data.translations[0].translatedText.removingPercentEncoding else {
+                    callback(false, nil)
+                    print("PUTAIIIN")
+                    return
+                }
+                let translationResponse = TranslationResponse(translatedText: text)
                 callback(true, translationResponse)
-                print(translationResponse)
             }
         }
         task?.resume()

@@ -48,13 +48,14 @@ class TranslateViewController: UIViewController {
             textToTranslateTextField.resignFirstResponder()
             textToTranslate = textToTranslateTextField.text ?? ""
             textToTranslate = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+            
             translationService.getTranslation(request: TranslationRequest(source: "fr", target: "en", text: textToTranslate)) { (success, response) in
                 self.activityIndicator.isHidden = true
                 self.activityIndicator.stopAnimating()
                 if success, let response = response {
-                    print("response", response)
                     self.translatedText = response.translatedText
                     self.translatedTextLabel.text = self.translatedText
+                    
                 } else {
                     self.translatedTextLabel.text = "Error"
                 }
