@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fhd-UW-ga3">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Fhd-UW-ga3">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,7 +15,7 @@
                 <navigationController id="DgP-AB-BmX" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Translate" image="character.bubble.ja" catalog="system" id="yea-KG-0iJ"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Zho-bk-EUj">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <navigationBarAppearance key="standardAppearance"/>
                     </navigationBar>
@@ -29,19 +30,19 @@
         <!--Translate-->
         <scene sceneID="DnP-DA-9ya">
             <objects>
-                <viewController id="vaw-ta-ElE" customClass="TranslateViewController" customModule="Le_Baluchon" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vaw-ta-ElE" customClass="TranslationViewController" customModule="Le_Baluchon" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hbK-7J-Yw3">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDH-Wk-RyB">
-                                <rect key="frame" x="68" y="284" width="256" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Text to translate" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDH-Wk-RyB">
+                                <rect key="frame" x="68" y="239" width="256" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IaX-Ov-4eO">
-                                <rect key="frame" x="159" y="490" width="75" height="35"/>
+                                <rect key="frame" x="159" y="646" width="75" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Button"/>
@@ -53,8 +54,8 @@
                                 <rect key="frame" x="174" y="103" width="44" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MiA-Nc-lTn">
-                                <rect key="frame" x="68" y="255" width="42" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MiA-Nc-lTn">
+                                <rect key="frame" x="68" y="281" width="256" height="256"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -82,7 +83,7 @@
                 <navigationController id="6Ux-Lr-ciZ" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Item" image="cloud.sun" catalog="system" id="nlH-YW-W8A"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="udr-KC-Zv1">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -209,13 +210,13 @@
             </objects>
             <point key="canvasLocation" x="-2520" y="458"/>
         </scene>
-        <!--Converter-->
+        <!--Currency Converter-->
         <scene sceneID="hgO-Hn-Uyp">
             <objects>
-                <navigationController id="fcg-ko-iNJ" sceneMemberID="viewController">
+                <navigationController id="fcg-ko-iNJ" userLabel="Currency Converter" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Converter" image="dollarsign.arrow.circlepath" catalog="system" id="xZJ-F5-u9s"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="IkN-nr-AbJ">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <navigationBarAppearance key="standardAppearance"/>
                     </navigationBar>
@@ -247,15 +248,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yOo-FG-XrY">
-                                <rect key="frame" x="16" y="103" width="361" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="65j-Su-vIe"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyu-qu-fIW">
                                 <rect key="frame" x="176" y="292" width="41.333333333333343" height="50"/>
                                 <constraints>
@@ -278,7 +270,7 @@
                                     <action selector="getRateTapped:" destination="1zU-Hv-7vS" eventType="touchUpInside" id="NUp-vh-BPA"/>
                                 </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
+                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
                                 <rect key="frame" x="0.0" y="451" width="393" height="162"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="393" id="Feu-d2-j53"/>
@@ -296,11 +288,8 @@
                             <constraint firstItem="Hyu-qu-fIW" firstAttribute="top" secondItem="Nzo-7o-WPD" secondAttribute="top" constant="292" id="AwD-4Z-sOf"/>
                             <constraint firstItem="YYi-EX-XC3" firstAttribute="leading" secondItem="JRg-hy-mZ0" secondAttribute="leading" constant="65" id="DPW-pD-Jtx"/>
                             <constraint firstItem="kib-7M-jN3" firstAttribute="centerX" secondItem="jRg-rA-zgh" secondAttribute="centerX" id="GYw-kI-09a"/>
-                            <constraint firstItem="yOo-FG-XrY" firstAttribute="top" secondItem="JRg-hy-mZ0" secondAttribute="top" id="MKA-Tg-cnm"/>
                             <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="Nzo-7o-WPD" secondAttribute="leadingMargin" id="NDi-fb-GRF"/>
                             <constraint firstItem="jRg-rA-zgh" firstAttribute="top" secondItem="tqO-t9-TAr" secondAttribute="bottom" constant="8" symbolic="YES" id="PIl-fh-ndc"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="trailing" secondItem="yOo-FG-XrY" secondAttribute="trailing" id="Usg-fl-LHl"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="yOo-FG-XrY" secondAttribute="leading" id="XLE-4O-1CC"/>
                             <constraint firstItem="kib-7M-jN3" firstAttribute="top" secondItem="jRg-rA-zgh" secondAttribute="bottom" constant="8" id="eAq-rk-Lxm"/>
                             <constraint firstItem="Hyu-qu-fIW" firstAttribute="centerX" secondItem="JRg-hy-mZ0" secondAttribute="centerX" id="f8k-Sv-Lcn"/>
                             <constraint firstItem="jRg-rA-zgh" firstAttribute="centerX" secondItem="Hyu-qu-fIW" secondAttribute="centerX" id="gIv-fp-MRs"/>
@@ -315,7 +304,6 @@
                         <outlet property="countryPicker" destination="kib-7M-jN3" id="uKq-Hs-aFB"/>
                         <outlet property="currencyCodeTextField" destination="jRg-rA-zgh" id="0yd-nM-CXa"/>
                         <outlet property="getRate" destination="YYi-EX-XC3" id="61E-d1-hfn"/>
-                        <outlet property="titleLabel" destination="yOo-FG-XrY" id="fgM-fd-7eY"/>
                         <outlet property="usdAmountLabel" destination="Hyu-qu-fIW" id="YUy-YF-7XH"/>
                     </connections>
                 </viewController>

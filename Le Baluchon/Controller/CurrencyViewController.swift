@@ -17,7 +17,8 @@ import UIKit
 class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Properties
-    private let currencyConverter = CurrencyConverter()
+//    private let currencyConverter = CurrencyConverter()
+    private let currencyService = CurrencyServiceImplementation()
     private var amount: Double = 0
     private var currencyCode: String = ""
     private var usdAmount: Double = 0
@@ -57,8 +58,6 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     }
 
 
-
-
     // MARK: View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -68,7 +67,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     // MARK: Prepare View
     private func prepareView() {
-        titleLabel.text = "Currency Converter"
+        
         amountTextField.placeholder = "Amount"
         currencyCodeTextField.placeholder = "Currency Code"
         usdAmountLabel.text = "AMOUNT INCOMMING"
@@ -78,7 +77,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         getRate.layer.masksToBounds = true
 
         currencyCodeTextField.inputView = countryPicker
-        self.currencyDictionary = currencyConverter.symbols
+        self.currencyDictionary = currencyService.symbols
         for (key, value) in currencyDictionary {
             print("In VC : \(key) - \(value)")
         }
@@ -113,7 +112,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             return
         }
         
-        currencyConverter.convert(amount: amount, country: country) { usdAmount in
+        currencyService.convert(amount: amount, country: country) { usdAmount in
             DispatchQueue.main.async { [self] in
                 getRate.setTitle("Get", for: .normal)
                 getRate.configuration?.showsActivityIndicator = false

@@ -65,7 +65,7 @@ struct Sys: Codable {
     let id: Int
     let country: String
     let sunrise: Int
-    let sunset: Int 
+    let sunset: Int
     var sunriseDate: String {
         let date = Date(timeIntervalSince1970: Double(sunrise))
         let dateFormatter = DateFormatter()
@@ -78,7 +78,11 @@ struct Sys: Codable {
         dateFormatter.timeStyle = .short
         return dateFormatter.string(from: date)
     }
-    
+}
+
+struct WeatherError: Codable {
+    let cod: String
+    let message: String
 }
 
 struct WeatherRequest {
@@ -96,7 +100,6 @@ struct WeatherRequest {
             URLQueryItem(name: "appid", value: accessKey),
             URLQueryItem(name: "units", value: "metric")
         ]
-        print(url)
         return urlComponents?.url
     }
 }
@@ -154,99 +157,5 @@ enum WeatherIcon: String {
         case .mistDay, .mistNight:
             return UIImage(systemName: "cloud.fog")!
         }
-    }
-}
-
-
-
-protocol WeatherService {
-    func getWeather(city: String, callback: @escaping (Bool, WeatherResponse?) -> Void)
-}
-
-class WeatherServiceImplementation: WeatherService {
-    
-    private let accessKey: String
-    private let baseURL: String
-    private var city1Weather: WeatherResponse?
-    private var city2Weather: WeatherResponse?
-    private var task: URLSessionDataTask?
-    private var session = URLSession(configuration: .default)
-    
-    init(session: URLSession = URLSession(configuration: .default)) {
-        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
-              let keys = NSDictionary(contentsOfFile: path),
-              let accessKey = keys["OpenWeatherApiKey"] as? String,
-              let baseURL = keys["OpenWeatherBaseURL"] as? String else {
-            fatalError("Unable to read keys from Keys.plist")
-        }
-        self.accessKey = accessKey
-        self.baseURL = baseURL
-    }
-    
-    func getWeather(city: String, callback: @escaping (Bool, WeatherResponse?) -> Void) {
-        switch city {
-        case "New York":
-            if let city1Weather = city1Weather {
-                if city1Weather.dt > Int(Date().timeIntervalSince1970) {
-                    callback(true, city1Weather)
-                } else {
-                    getWeatherFromAPI(city: city, callback: callback)
-                }
-                callback(true, city1Weather)
-            } else {
-                getWeatherFromAPI(city: city, callback: callback)
-            }
-        case "Paris":
-            if let city2Weather = city2Weather {
-                if city2Weather.dt > Int(Date().timeIntervalSince1970) {
-                    callback(true, city2Weather)
-                } else {
-                    getWeatherFromAPI(city: city, callback: callback) // EXC_BAD_ACCESS (code=2, address=0x3086f1db8) when I try to call getWeather(city: city, callback: callback) here
-                    
-                    
-                }
-                callback(true, city2Weather)
-            } else {
-                getWeatherFromAPI(city: city, callback: callback)
-            }
-        default:
-            getWeatherFromAPI(city: city, callback: callback)
-        }
-    }
-    
-    func getWeatherFromAPI(city: String, callback: @escaping (Bool, WeatherResponse?) -> Void) {
-        guard let url = WeatherRequest(city: city, accessKey: accessKey, baseURL: baseURL).url else {
-            callback(false, nil)
-            return
-        }
-        task?.cancel()
-        task = session.dataTask(with: url) { (data, response, error) in
-            DispatchQueue.main.async {
-                guard let data = data, error == nil else {
-                    callback(false, nil)
-                    return
-                }
-                guard let response = try? JSONDecoder().decode(WeatherResponse.self, from: data) else {
-                    callback(false, nil)
-                    return
-                }
-                
-                let iconImage = response.weather[0].iconImage
-                let sunrise = response.sys.sunriseDate
-                let sunset = response.sys.sunsetDate
-                
-                switch city {
-                case "New York":
-                    self.city1Weather = response
-                case "Paris":
-                    self.city2Weather = response
-                default:
-                    break
-                }
-                
-                callback(true, response)
-            }
-        }
-        task?.resume()
     }
 }

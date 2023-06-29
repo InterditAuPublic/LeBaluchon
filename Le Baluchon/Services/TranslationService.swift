@@ -1,62 +1,20 @@
 //
-//  Translation.swift
+//  TranslateService.swift
 //  Le Baluchon
 //
-//  Created by Melvin Poutrel on 11/05/2023.
+//  Created by Melvin Poutrel on 09/06/2023.
 //
 
 import Foundation
 
-// MARK: - Translation
-struct Translation: Codable {
-    let data: DataClass
-}
-
-// MARK: - DataClass
-struct DataClass: Codable {
-    let translations: [TranslationElement]
-}
-
-// MARK: - TranslationElement
-struct TranslationElement: Codable {
-    let translatedText: String
-}
-
-// MARK: - TranslationError
-struct TranslationError: Codable {
-    let error: Error
-}
-
-// MARK: - Error
-struct Error: Codable {
-    let code: Int
-    let message: String
-}
-
-// MARK: - TranslationRequest
-
-struct TranslationRequest {
-    let source: String
-    let target: String
-    let text: String
-}
-
-// MARK: - TranslationResponse
-struct TranslationResponse {
-    let translatedText: String
-}
-
 // MARK: - TranslationService
-
 protocol TranslationService {
     func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void)
 }
 
 class TranslationServiceImplementation: TranslationService {
-
     var task: URLSessionDataTask?
-    var session = URLSession(configuration: .default)
-    var translation: Translation?
+    var session: URLSession
     private let accessKey: String
     private let baseURL: String
 
@@ -73,18 +31,13 @@ class TranslationServiceImplementation: TranslationService {
     }
 
     func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void) {
-        print("\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)")
         guard let url = URL(string: "\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)") else {
             callback(false, nil)
             return
         }
-       task?.cancel()
+        task?.cancel()
         task = session.dataTask(with: url) { (data, response, error) in
             DispatchQueue.main.async {
-                print("data: \(String(describing: data))")
-                print("response: \(String(describing: response))")
-                print("error: \(String(describing: error))")
-
                 guard let data = data, error == nil else {
                     callback(false, nil)
                     return
@@ -99,7 +52,6 @@ class TranslationServiceImplementation: TranslationService {
                 }
                 guard let text = responseJSON.data.translations[0].translatedText.removingPercentEncoding else {
                     callback(false, nil)
-                    print("PUTAIIIN")
                     return
                 }
                 let translationResponse = TranslationResponse(translatedText: text)
