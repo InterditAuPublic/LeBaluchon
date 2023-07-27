@@ -90,7 +90,6 @@ class TranslationViewController: UIViewController {
 
 
          // Ajout d'une contrainte pour aligner les UITextView verticalement
-         let verticalSpacing: CGFloat = 16.0
          textToTranslateTextView.centerYAnchor.constraint(equalTo: textToTranslateViewContainer.centerYAnchor).isActive = true
          translatedTextView.centerYAnchor.constraint(equalTo: translatedTextViewContrainer.centerYAnchor).isActive = true
          textToTranslateTextView.leadingAnchor.constraint(equalTo: textToTranslateViewContainer.leadingAnchor, constant: 16.0).isActive = true
@@ -127,14 +126,19 @@ class TranslationViewController: UIViewController {
     @IBOutlet weak var translatedTextView: UITextView!
     
     // MARK: - Actions
+    
     @IBAction func onTranslateTapped(_ sender: UIButton) {
-//        activityIndicator.isHidden = false
+
+        guard let textToTranslate = textToTranslateTextView.text, !textToTranslate.isEmpty else {
+            return UIAlertHelper.showAlertWithTitle("Error", message: "Please enter a text to translate", from: self)
+        }
+        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         textToTranslateTextView.resignFirstResponder()
-        textToTranslate = textToTranslateTextView.text ?? ""
-        textToTranslate = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+        self.textToTranslate = textToTranslateTextView.text ?? ""
+        self.textToTranslate = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
 
-        translationService.getTranslation(request: TranslationRequest(source: "fr", target: "en", text: textToTranslate)) { (success, response) in
+        translationService.getTranslation(request: TranslationRequest(source: "fr", target: "en", text: self.textToTranslate)) { (success, response) in
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
             if success, let response = response {
@@ -145,10 +149,10 @@ class TranslationViewController: UIViewController {
                 self.translatedTextView.text = "Error"
             }
         }
-//        print("on translate tapped")
     }
     
     // MARK: - Tap Gesture
+    
     private func addTapGesture() {
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
         view.addGestureRecognizer(tapGesture!)
@@ -159,8 +163,6 @@ class TranslationViewController: UIViewController {
     }
     
     // MARK: - Keyboard
-    
-    // TODO: check for constaints + stack view
     
     private func registerKeyboardNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(_:)), name: UIResponder.keyboardWillShowNotification, object: nil)
