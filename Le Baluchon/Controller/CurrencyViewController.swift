@@ -17,47 +17,46 @@ import UIKit
 class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Properties
-//    private let currencyConverter = CurrencyConverter()
     private let currencyService = CurrencyServiceImplementation()
     private var amount: Double = 0
     private var currencyCode: String = ""
     private var usdAmount: Double = 0
-
+    
     // MARK: - Picker View
     private var currencyDictionary: [String: String] = [:]
-
+    
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return currencyDictionary.count
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         let sortedSymbols = currencyDictionary.sorted { $0.key < $1.key }
         let currencyCode = sortedSymbols[row].key
         let currencyName = sortedSymbols[row].value
         return "\(currencyCode) - \(currencyName)"
     }
-
+    
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let sortedSymbols = currencyDictionary.sorted { $0.key < $1.key }
         let currencyCode = sortedSymbols[row].key
-        currencyCodeTextField.text = currencyCode     
+        currencyCodeTextField.text = currencyCode
     }
-
+    
     // set the selected row of the picker view to "USD" key by default
     func setPickerView() {
         let sortedSymbols = currencyDictionary.sorted { $0.key < $1.key }
+        print("Sorted Symbols \(currencyDictionary.count)")
         for (index, element) in sortedSymbols.enumerated() {
             if element.key == "USD" {
                 countryPicker.selectRow(index, inComponent: 0, animated: true)
             }
         }
     }
-
-
+    
     // MARK: View Life cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,19 +74,16 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         getRate.setTitleColor(.white, for: .normal)
         getRate.layer.cornerRadius = 5
         getRate.layer.masksToBounds = true
-
-        currencyCodeTextField.inputView = countryPicker
         self.currencyDictionary = currencyService.symbols
-        for (key, value) in currencyDictionary {
-            print("In VC : \(key) - \(value)")
-        }
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(currencyCodeTextFieldTapped))
+            currencyCodeTextField.addGestureRecognizer(tapGesture)
+        
         countryPicker.delegate = self
         countryPicker.dataSource = self
-        
     }
     
     // MARK: - Outlets
-    @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var amountTextField: UITextField!
     @IBOutlet weak var currencyCodeTextField: UITextField!
     @IBOutlet weak var usdAmountLabel: UILabel!
@@ -106,8 +102,9 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
               let amount = Double(amountText),
               let country = currencyCodeTextField.text
         else {
+            UIAlertHelper.showAlertWithTitle("Error", message: "Oops, you must provide an Amount value", from: self)
             usdAmountLabel.text = "Oops, you must provide an Amount value"
-            getRate.setTitle("Get", for: .normal)
+            getRate.setTitle("Convert", for: .normal)
             getRate.configuration?.showsActivityIndicator = false
             return
         }
@@ -116,12 +113,20 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
             DispatchQueue.main.async { [self] in
                 getRate.setTitle("Get", for: .normal)
                 getRate.configuration?.showsActivityIndicator = false
-                guard let usdAmount = usdAmount else {
+                if let usdAmount = usdAmount {
+                    usdAmountLabel.text = "\(usdAmount) \(country)"
+                } else {
+                    UIAlertHelper.showAlertWithTitle("Error", message: "Oops, something went wrong. Please try again later.", from: self)
                     usdAmountLabel.text = "Error"
-                    return
                 }
-                usdAmountLabel.text = "\(usdAmount) \(country)"
             }
         }
     }
+    
+    @objc private func currencyCodeTextFieldTapped() {
+        // Show picker when currencyCodeTextField is tapped
+        currencyCodeTextField.inputView = countryPicker
+        currencyCodeTextField.becomeFirstResponder()
+    }
 }
+

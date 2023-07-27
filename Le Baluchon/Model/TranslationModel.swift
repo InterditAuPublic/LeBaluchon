@@ -33,13 +33,13 @@ struct ErrorDetail: Codable {
 }
 
 // MARK: - TranslationRequest
-struct TranslationRequest {
+struct TranslationRequest: Codable {
     let source: String
     let target: String
     let text: String
 }
 
 // MARK: - TranslationResponse
-struct TranslationResponse {
+struct TranslationResponse: Codable {
     let translatedText: String
 }

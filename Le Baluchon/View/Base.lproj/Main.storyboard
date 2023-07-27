@@ -20,7 +20,7 @@
                         <navigationBarAppearance key="standardAppearance"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="vaw-ta-ElE" kind="relationship" relationship="rootViewController" id="NVl-vZ-A1U"/>
+                        <segue destination="vaw-ta-ElE" kind="relationship" relationship="rootViewController" id="hXN-fZ-KFc"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hcc-4s-l85" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -35,47 +35,110 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Text to translate" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oDH-Wk-RyB">
-                                <rect key="frame" x="68" y="239" width="256" height="34"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bEo-VU-xzZ">
+                                <rect key="frame" x="0.0" y="64" width="392" height="739"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IaX-Ov-4eO">
-                                <rect key="frame" x="159" y="646" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
-                                <connections>
-                                    <action selector="onTranslateTapped:" destination="vaw-ta-ElE" eventType="touchUpInside" id="fEo-VB-Efm"/>
-                                </connections>
-                            </button>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="9Nr-Ko-ZK3">
-                                <rect key="frame" x="174" y="103" width="44" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </activityIndicatorView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" showsExpansionTextWhenTruncated="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MiA-Nc-lTn">
-                                <rect key="frame" x="68" y="281" width="256" height="256"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="9Nr-Ko-ZK3">
+                                        <rect key="frame" x="177" y="79" width="38" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </activityIndicatorView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="a5i-eS-snc">
+                                        <rect key="frame" x="0.0" y="0.0" width="392" height="663.33333333333337"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NhF-Wu-Bq0" userLabel="textToTranslateViewContainer">
+                                                <rect key="frame" x="0.0" y="0.0" width="392" height="331.66666666666669"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paq-Ri-uMW">
+                                                        <rect key="frame" x="76" y="130" width="240" height="20.333333333333371"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="P3M-zJ-nab" userLabel="textToTranslateTextView">
+                                                        <rect key="frame" x="76" y="176.66666666666663" width="240" height="127.33333333333337"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="240" id="MsE-Sn-euw"/>
+                                                        </constraints>
+                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                        <color key="textColor" systemColor="labelColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </view>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yKQ-Cm-iMa" userLabel="translatedTextViewContainer">
+                                                <rect key="frame" x="0.0" y="331.66666666666663" width="392" height="331.66666666666663"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Hs-1N-A16">
+                                                        <rect key="frame" x="175.33333333333331" y="57.000000000000007" width="41.333333333333343" height="20.333333333333336"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="zAe-Cz-soq" userLabel="translatedTextView">
+                                                        <rect key="frame" x="76" y="118.66666666666669" width="240" height="128"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="128" id="9op-zM-8ZS"/>
+                                                        </constraints>
+                                                        <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                        <color key="textColor" systemColor="labelColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstItem="zAe-Cz-soq" firstAttribute="top" secondItem="8Hs-1N-A16" secondAttribute="bottom" constant="41.333333333333314" id="30b-XT-Pbl"/>
+                                                    <constraint firstItem="zAe-Cz-soq" firstAttribute="centerX" secondItem="8Hs-1N-A16" secondAttribute="centerX" id="Trb-if-4NC"/>
+                                                    <constraint firstItem="8Hs-1N-A16" firstAttribute="top" secondItem="yKQ-Cm-iMa" secondAttribute="top" constant="57.000000000000007" id="XJe-mX-407"/>
+                                                    <constraint firstItem="8Hs-1N-A16" firstAttribute="centerX" secondItem="yKQ-Cm-iMa" secondAttribute="centerX" id="YlE-7c-T0W"/>
+                                                    <constraint firstAttribute="bottom" secondItem="zAe-Cz-soq" secondAttribute="bottom" constant="85" id="b43-Kl-dYb"/>
+                                                    <constraint firstItem="zAe-Cz-soq" firstAttribute="leading" secondItem="yKQ-Cm-iMa" secondAttribute="leading" constant="76" id="eBa-CW-YrW"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IaX-Ov-4eO">
+                                        <rect key="frame" x="0.0" y="203" width="392" height="331.66666666666652"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="EtJ-IW-pfv"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="filled" title="Button"/>
+                                        <connections>
+                                            <action selector="onTranslateTapped:" destination="vaw-ta-ElE" eventType="touchUpInside" id="goS-zf-ujy"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <viewLayoutGuide key="contentLayoutGuide" id="fqg-80-ozf"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="zqW-Sb-oYR"/>
+                            </scrollView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zSS-gR-GsQ"/>
                         <color key="backgroundColor" systemColor="systemGray5Color"/>
                     </view>
                     <navigationItem key="navigationItem" title="Translate" id="eR6-v2-ro5"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="9Nr-Ko-ZK3" id="w3S-2Y-JWO"/>
-                        <outlet property="textToTranslateTextField" destination="oDH-Wk-RyB" id="nTA-q0-ZWA"/>
-                        <outlet property="translateButton" destination="IaX-Ov-4eO" id="dmW-q1-PvR"/>
-                        <outlet property="translatedTextLabel" destination="MiA-Nc-lTn" id="ejL-Kp-hkb"/>
+                        <outlet property="activityIndicator" destination="9Nr-Ko-ZK3" id="n5Q-kx-6r6"/>
+                        <outlet property="scrollView" destination="bEo-VU-xzZ" id="ga1-ru-EWE"/>
+                        <outlet property="textToTranslateLabel" destination="paq-Ri-uMW" id="w2X-8g-af3"/>
+                        <outlet property="textToTranslateTextView" destination="P3M-zJ-nab" id="hgb-cv-Fnk"/>
+                        <outlet property="textToTranslateViewContainer" destination="NhF-Wu-Bq0" id="KX9-BZ-991"/>
+                        <outlet property="translateButton" destination="IaX-Ov-4eO" id="fdf-7Q-L41"/>
+                        <outlet property="translatedLabel" destination="8Hs-1N-A16" id="1ou-l9-S3J"/>
+                        <outlet property="translatedTextView" destination="zAe-Cz-soq" id="f0l-Gl-4w9"/>
+                        <outlet property="translatedTextViewContrainer" destination="yKQ-Cm-iMa" id="YZw-6D-sSG"/>
+                        <outlet property="verticalStackView" destination="a5i-eS-snc" id="mJM-EG-Fwi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qld-t7-ukv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="362.59541984732823" y="457.74647887323948"/>
+            <point key="canvasLocation" x="363" y="458"/>
         </scene>
         <!--Item-->
         <scene sceneID="e1B-yf-Z1c">
@@ -246,7 +309,7 @@
                                 <rect key="frame" x="16" y="367" width="361" height="34"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyu-qu-fIW">
                                 <rect key="frame" x="176" y="292" width="41.333333333333343" height="50"/>
@@ -270,8 +333,11 @@
                                     <action selector="getRateTapped:" destination="1zU-Hv-7vS" eventType="touchUpInside" id="NUp-vh-BPA"/>
                                 </connections>
                             </button>
-                            <pickerView hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
                                 <rect key="frame" x="0.0" y="451" width="393" height="162"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="393" id="Feu-d2-j53"/>
                                     <constraint firstAttribute="height" constant="162" id="HUc-Jx-ELe"/>

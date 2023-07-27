@@ -9,9 +9,13 @@ import Foundation
 import UIKit
 
 class WeatherViewController: UIViewController, UIScrollViewDelegate {
+
+    // MARK: - Properties
     private let weatherService = WeatherServiceImplementation()
     let city1View = CityWeatherReusableView(city: "Paris")
     let city2View = CityWeatherReusableView(city: "New York")
+
+    // MARK: - Outlets
     
     @IBOutlet weak var cityWeatherContainer: UIScrollView!
     @IBOutlet weak var weatherLabel: UINavigationItem!
@@ -26,9 +30,11 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         prepareView()
     }
-    
+
     private var scrollView: UIScrollView!
     private var pageControl: UIPageControl!
+
+    // MARK: - Methods
     
     private func prepareView() {
         scrollView = UIScrollView(frame: safeArea.bounds)

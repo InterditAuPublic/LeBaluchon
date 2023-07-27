@@ -13,7 +13,6 @@ protocol CurrencyService {
     func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void)
 }
 
-
 class CurrencyServiceImplementation: CurrencyService {
 
     // MARK: - Properties
@@ -22,10 +21,10 @@ class CurrencyServiceImplementation: CurrencyService {
 
     var symbols = [String: String]()
     let currencyBase = "EUR"
-    let currencyCode = "USD"
-    var exchangeRate: Double = 0
+    var currencyCode = "USD"
+    var exchangeRate = Double()
     var rates = [String: Double]()
-    var timestamp: Int = 0
+    var timestamp = Int()
 
     
     // MARK: - Initializer
@@ -62,14 +61,14 @@ class CurrencyServiceImplementation: CurrencyService {
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data else {
-                print(String(describing: error))
+                print("no data")
                 return
             }
             
             let json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
             let symbols = json["symbols"] as! [String: String]
             self.symbols = symbols
-            print(symbols)
+            print("Symbols: \(symbols)")
 
         }
         task.resume()
@@ -77,12 +76,14 @@ class CurrencyServiceImplementation: CurrencyService {
     
     func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void) {
         if (self.timestamp != 0 && Date().timeIntervalSince1970 - Double(self.timestamp) < 86400) {
+            print("SELF")
             let exchangeRate = self.rates[country] ?? 0
             print(exchangeRate)
             var result = amount * exchangeRate
             result = Double(round(100*result)/100)
             completion(result)
         } else {
+            print("API")
             return convertWithAPI(amount: amount, completion: completion)
         }
         print(timestamp)
@@ -108,7 +109,6 @@ class CurrencyServiceImplementation: CurrencyService {
                 return
             }
             guard let jsonResponse = data else {
-                print("No data received")
                 completion(nil)
                 return
             }
@@ -165,8 +165,6 @@ class CurrencyServiceImplementation: CurrencyService {
 
      func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void) {
         if self.rates.isEmpty {
-            print("getRatesWithAPI")
-            
             var currencyCode = [String].self()
             for (key, _) in symbols {
                 currencyCode.append(key)
@@ -190,18 +188,15 @@ class CurrencyServiceImplementation: CurrencyService {
                       let rates = json["rates"] as? [String: Double],
                       let info = json["info"] as? [String: Any],
                       let timestamp = info["timestamp"] as? Int
+                      
                 else {
                     completion(nil)
                     return
                 }
                 
-                self.rates = rates
-                
-                for (key, value) in self.rates {
-                    print("RATES : \(key) : \(value)")
-                }
                 self.timestamp = timestamp
-                
+                self.rates = rates
+
                 completion(rates)
             }
             task.resume()

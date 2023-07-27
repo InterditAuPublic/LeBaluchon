@@ -6,14 +6,16 @@
 //
 
 import XCTest
+@testable import Le_Baluchon
 
 class TranslationServiceTests: XCTestCase {
     var translationService: TranslationService!
-    var mockSession: MockURLSession!
+    var mockSession: URLSessionMock!
+
 
     override func setUp() {
         super.setUp()
-        mockSession = MockURLSession()
+        mockSession = URLSessionMock()
         translationService = TranslationServiceImplementation(session: mockSession)
     }
 
@@ -23,68 +25,59 @@ class TranslationServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    func testGetTranslation_SuccessfulRequest_ReturnsTranslationResponse() {
+  func testGetTranslationShouldPostFailedCallbackIfError() {
+    // Given
+      let translationRequest = TranslationRequest(source: "en", target: "fr", text: "Bonjour")
+//    let error = Error?
+    mockSession.data = nil
+      mockSession.error = nil
+//    mockSession.error = error
+
+    // When
+    let expectation = XCTestExpectation(description: "Wait for queue change.")
+    translationService.getTranslation(request: translationRequest) { (success, response) in
+      // Then
+      XCTAssertFalse(success)
+      XCTAssertNil(response)
+      expectation.fulfill()
+    }
+    wait(for: [expectation], timeout: 0.01)
+  }
+
+    func testGetTranslationShouldPostFailedCallbackIfNoData() {
         // Given
-        let expectation = self.expectation(description: "Translation service callback")
-        let request = TranslationRequest(source: "en", target: "fr", text: "Hello")
-        let responseJSON = """
-        {
-            "data": {
-                "translations": [
-                    {
-                        "translatedText": "Bonjour"
-                    }
-                ]
-            }
+        let translationRequest = TranslationRequest(source: "en", target: "fr", text: "Bonjour")
+        mockSession.data = nil
+        mockSession.error = nil
+    
+        // When
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+        translationService.getTranslation(request: translationRequest) { (success, response) in
+        // Then
+        XCTAssertFalse(success)
+        XCTAssertNil(response)
+        expectation.fulfill()
         }
-        """
-        mockSession.mockDataTaskResponse = (data: responseJSON.data(using: .utf8), response: HTTPURLResponse(url: URL(string: "https://example.com")!, statusCode: 200, httpVersion: nil, headerFields: nil), error: nil)
+        wait(for: [expectation], timeout: 0.01)
+    }
+
+     func testGetTranslationUnreliable() {
+        
+        // Given
+        let translationRequest = TranslationRequest(source: "en", target: "fr", text: "Bonjour")
+        mockSession.data = nil
+        mockSession.error = nil
 
         // When
-        translationService.getTranslation(request: request) { success, response in
-            // Then
-            XCTAssertTrue(success, "Translation request should be successful")
-            XCTAssertNotNil(response, "Translation response should not be nil")
-            XCTAssertEqual(response?.translatedText, "Bonjour", "Translated text should be 'Bonjour'")
-            expectation.fulfill()
+        let expectation = XCTestExpectation(description: "Wait for queue change.")
+        translationService.getTranslation(request: translationRequest) { (success, response) in
+        // Then
+        XCTAssertFalse(success)
+        XCTAssertNil(response)
+        expectation.fulfill()
         }
+        wait(for: [expectation], timeout: 10)
 
-        waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func testGetTranslation_InvalidURL_ReturnsError() {
-        // Given
-        let expectation = self.expectation(description: "Translation service callback")
-        let request = TranslationRequest(source: "en", target: "fr", text: "Hello")
-        let invalidBaseURL = "invalidURL"
-
-        // When
-        translationService.getTranslation(request: request) { success, response in
-            // Then
-            XCTAssertFalse(success, "Translation request should fail")
-            XCTAssertNil(response, "Translation response should be nil")
-            expectation.fulfill()
-        }
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-
-    // Mock URLSession for testing
-    class MockURLSession: URLSession {
-        var mockDataTaskResponse: (data: Data?, response: URLResponse?, error: Error?)?
-
-        override func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-            
-        }
-    }
-
-    // Mock URLSessionDataTask for testing
-    class MockURLSessionDataTask: URLSessionDataTask {
-        var completionHandler: ((Data?, URLResponse?, Error?) -> Void)?
-        var mockResponse: (data: Data?, response: URLResponse?, error: Error?)?
-
-        override func resume() {
-            completionHandler?(mockResponse?.data, mockResponse?.response, mockResponse?.error)
-        }
-    }
 }

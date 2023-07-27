@@ -66,18 +66,6 @@ struct Sys: Codable {
     let country: String
     let sunrise: Int
     let sunset: Int
-    var sunriseDate: String {
-        let date = Date(timeIntervalSince1970: Double(sunrise))
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        return dateFormatter.string(from: date)
-    }
-    var sunsetDate: String {
-        let date = Date(timeIntervalSince1970: Double(sunset))
-        let dateFormatter = DateFormatter()
-        dateFormatter.timeStyle = .short
-        return dateFormatter.string(from: date)
-    }
 }
 
 struct WeatherError: Codable {

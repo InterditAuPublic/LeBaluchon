@@ -29,6 +29,7 @@ final class WeatherTests: XCTestCase {
     }
     
     func test_getWeatherFromAPI_shouldCallbackFalseNil_whenCallbackErrorNonNil() {
+        // Given
         let weatherService = WeatherServiceImplementation()
         //        let error = Error()
 //        weatherService.session = MockSession(data: , response: , error: error)
@@ -48,17 +49,99 @@ final class WeatherTests: XCTestCase {
         wait(for: [expectation], timeout: 2.0)
     }
     
-//    class MockSession: URLSession {
-//        var data: Data?
-//        var error: Error?
-//        
-//        override func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask {
-//            let data = self.data
-//            let error = self.error
-//            override func dataTask(with url: URL, callback: ()) {
-//                callback(data, response, error)
-//            }
-//        }
-//        
-//    }
+    func testIconImageWithValidIcon() {
+        let weather = Weather(id: 1, main: "Sunny", description: "Clear sky", icon: "01d")
+        
+        XCTAssertNotNil(weather.iconImage)
+    }
+    
+    func testIconImageWithInvalidIcon() {
+        let weather = Weather(id: 2, main: "Cloudy", description: "Partly cloudy", icon: "invalid_icon")
+        
+        XCTAssertNil(weather.iconImage)
+    }
+
+    func testSunriseDateConversion() {
+        let sys = Sys(type: 1, id: 123, country: "US", sunrise: 1625865600, sunset: 1625911142)
+        
+        XCTAssertEqual(sys.sunriseDate, "5:20 AM")
+    }
+    
+    func testSunsetDateConversion() {
+        let sys = Sys(type: 2, id: 456, country: "UK", sunrise: 1625865600, sunset: 1625911142)
+        
+        XCTAssertEqual(sys.sunsetDate, "8:52 PM")
+    }
+
+    func testURLWithValidComponents() {
+        // Given
+        let baseURL = "https://api.weather.com"
+        let city = "New York"
+        let accessKey = "your_access_key"
+        // When
+        let WeatherRequest = WeatherRequest(city: city, accessKey: accessKey, baseURL: baseURL)
+        // Then
+        XCTAssertNotNil(WeatherRequest.url)
+    }
+    
+    func testURLWithInvalidBaseURL() {
+        // Given
+        let invalidBaseURL = "invalid_url"
+        let city = "New York"
+        let accessKey = "your_access_key"
+        // When
+        let WeatherRequest = WeatherRequest(city: city, accessKey: accessKey, baseURL: invalidBaseURL)
+        // Then
+        XCTAssertNil(WeatherRequest.url)
+    }
+    
+    func testURLWithMissingComponents() {
+        // Given
+        let baseURL = ""
+        let missingCity = ""
+        let missingAccessKey = ""
+        // When
+        let WeatherRequest = WeatherRequest(city: missingCity, accessKey: missingAccessKey, baseURL: baseURL)
+        // Then
+        XCTAssertNil(WeatherRequest.url)
+    }
+
+    func testIconImageForClearDay() {
+        // Given
+        let icon = WeatherIcon.clearDay
+        // When
+        let image = icon.getIconImage()
+        // Then
+        XCTAssertNotNil(image)
+//        XCTAssertEqual(image.systemName, "sun.max")
+    }
+    
+    func testIconImageForCloudyNight() {
+        // Given
+        let icon = WeatherIcon.cloudyNight
+        // When
+        let image = icon.getIconImage()
+        // Then
+        XCTAssertNotNil(image)
+//        XCTAssertEqual(image.systemName, "cloud")
+    }
+    
+    func testIconImageForRainNight() {
+        // Given
+        let icon = WeatherIcon.rainNight
+        // When
+        let image = icon.getIconImage()
+        // Then
+        XCTAssertNotNil(image)
+//        XCTAssertEqual(image.systemName, "cloud.rain.fill")
+    }
+    
+    func testIconImageForInvalidIcon() {
+        // Given
+        let icon = WeatherIcon(rawValue: "invalid_icon")
+        // When
+        let image = icon?.getIconImage()
+        // Then
+        XCTAssertNil(image)
+    }
 }

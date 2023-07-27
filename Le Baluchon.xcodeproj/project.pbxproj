@@ -29,6 +29,9 @@
 		B05565002A03FDA8001C81D1 /* TranslationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05564FF2A03FDA8001C81D1 /* TranslationViewController.swift */; };
 		B05565022A040074001C81D1 /* Keys.plist in Resources */ = {isa = PBXBuildFile; fileRef = B05565012A040074001C81D1 /* Keys.plist */; };
 		B05565042A0400FF001C81D1 /* CurrencyModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05565032A0400FF001C81D1 /* CurrencyModel.swift */; };
+		B070CF602A7292B600880908 /* URLSessionMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B070CF5F2A7292B600880908 /* URLSessionMock.swift */; };
+		B070CF632A729F3200880908 /* UIAlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B070CF622A729F3200880908 /* UIAlertHelper.swift */; };
+		B070CF662A72C18500880908 /* URLSessionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B070CF652A72C18500880908 /* URLSessionProtocol.swift */; };
 		B0B3DDBF2A3B095C009C69FA /* CurrencyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B3DDBE2A3B095C009C69FA /* CurrencyTests.swift */; };
 		B0B3DDC12A3B09D6009C69FA /* TranslateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B3DDC02A3B09D6009C69FA /* TranslateTests.swift */; };
 		B0B3DDC42A3B0C48009C69FA /* CurrencyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04891482A31F1DA00443EA6 /* CurrencyService.swift */; };
@@ -84,6 +87,9 @@
 		B05564FF2A03FDA8001C81D1 /* TranslationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationViewController.swift; sourceTree = "<group>"; };
 		B05565012A040074001C81D1 /* Keys.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Keys.plist; sourceTree = "<group>"; };
 		B05565032A0400FF001C81D1 /* CurrencyModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyModel.swift; sourceTree = "<group>"; };
+		B070CF5F2A7292B600880908 /* URLSessionMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionMock.swift; sourceTree = "<group>"; };
+		B070CF622A729F3200880908 /* UIAlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIAlertHelper.swift; sourceTree = "<group>"; };
+		B070CF652A72C18500880908 /* URLSessionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLSessionProtocol.swift; sourceTree = "<group>"; };
 		B0B3DDBE2A3B095C009C69FA /* CurrencyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTests.swift; sourceTree = "<group>"; };
 		B0B3DDC02A3B09D6009C69FA /* TranslateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslateTests.swift; sourceTree = "<group>"; };
 		B0BD7E582A0D41A200C3A9C8 /* WeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherModel.swift; sourceTree = "<group>"; };
@@ -121,6 +127,7 @@
 				B04891462A31EED500443EA6 /* WeatherService.swift */,
 				B04891482A31F1DA00443EA6 /* CurrencyService.swift */,
 				B048914A2A33192500443EA6 /* TranslationService.swift */,
+				B070CF652A72C18500880908 /* URLSessionProtocol.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -148,6 +155,7 @@
 		B05564C62A03F9EC001C81D1 /* Le Baluchon */ = {
 			isa = PBXGroup;
 			children = (
+				B070CF612A729F1500880908 /* Helpers */,
 				B04891452A31EEC200443EA6 /* Services */,
 				B05564FA2A03FC6B001C81D1 /* Supporting Files */,
 				B05564F92A03FC49001C81D1 /* Controller */,
@@ -161,6 +169,7 @@
 		B05564DD2A03F9EE001C81D1 /* Le BaluchonTests */ = {
 			isa = PBXGroup;
 			children = (
+				B070CF5E2A7292A700880908 /* URLSessionMock */,
 				B05564DE2A03F9EE001C81D1 /* Le_BaluchonTests.swift */,
 				B048914C2A331BDE00443EA6 /* WeatherTests.swift */,
 				B0B3DDBE2A3B095C009C69FA /* CurrencyTests.swift */,
@@ -218,6 +227,22 @@
 				B05564C72A03F9EC001C81D1 /* AppDelegate.swift */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B070CF5E2A7292A700880908 /* URLSessionMock */ = {
+			isa = PBXGroup;
+			children = (
+				B070CF5F2A7292B600880908 /* URLSessionMock.swift */,
+			);
+			path = URLSessionMock;
+			sourceTree = "<group>";
+		};
+		B070CF612A729F1500880908 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B070CF622A729F3200880908 /* UIAlertHelper.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -354,12 +379,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B070CF662A72C18500880908 /* URLSessionProtocol.swift in Sources */,
 				B048914B2A33192500443EA6 /* TranslationService.swift in Sources */,
 				B04891472A31EED500443EA6 /* WeatherService.swift in Sources */,
 				B01FA1D12A2412EC00D325BE /* CityWeatherReusableView.swift in Sources */,
 				B05565042A0400FF001C81D1 /* CurrencyModel.swift in Sources */,
 				B05564FE2A03FD87001C81D1 /* WeatherViewController.swift in Sources */,
 				B05564FC2A03FD76001C81D1 /* CurrencyViewController.swift in Sources */,
+				B070CF632A729F3200880908 /* UIAlertHelper.swift in Sources */,
 				B04891492A31F1DA00443EA6 /* CurrencyService.swift in Sources */,
 				B0BD7E5B2A0D41B000C3A9C8 /* TranslationModel.swift in Sources */,
 				B05564C82A03F9EC001C81D1 /* AppDelegate.swift in Sources */,
@@ -383,6 +410,7 @@
 				B0B3DDC62A3B0D50009C69FA /* TranslationService.swift in Sources */,
 				B0B3DDC82A3B0F4B009C69FA /* CityWeatherReusableView.swift in Sources */,
 				B04891502A33206100443EA6 /* WeatherModel.swift in Sources */,
+				B070CF602A7292B600880908 /* URLSessionMock.swift in Sources */,
 				B0B3DDC12A3B09D6009C69FA /* TranslateTests.swift in Sources */,
 				B0B3DDCA2A3B0F5B009C69FA /* CurrencyModel.swift in Sources */,
 				B05564DF2A03F9EE001C81D1 /* Le_BaluchonTests.swift in Sources */,

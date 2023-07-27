@@ -22,8 +22,16 @@ class CityWeatherReusableView: UIView {
     @IBOutlet weak var windIcon: UIImageView!
     @IBOutlet weak var windLabel: UILabel!
     
+    @IBOutlet weak var infoHorizontalStackView: UIStackView!
+    
+    @IBOutlet weak var sunriseVerticalStackView: UIStackView!
+    
+    @IBOutlet weak var windSpeedVerticalStackView: UIStackView!
+    
+    @IBOutlet weak var sunsetVerticalStackView: UIStackView!
     private let weatherService = WeatherServiceImplementation()
     private var city: String
+    private weak var vc : WeatherViewController?
     
     init(city: String) {
         self.city = city
@@ -49,7 +57,7 @@ class CityWeatherReusableView: UIView {
     private func getCityWeather(city: String) {
         weatherService.getWeather(city: city) { [weak self] success, weatherResponse in
             guard let self = self, success, let weatherResponse = weatherResponse else {
-                print("ERROR WHILE GETTING DATA")
+//                UIAlertHelper.showAlertWithTitle("Error", message: "Unable to get weather for \(city)", from: self!.vc!)
                 return
             }
             DispatchQueue.main.async {
@@ -60,14 +68,34 @@ class CityWeatherReusableView: UIView {
     
     func updateView(weather: WeatherResponse) {
         cityLabel.text = weather.name
-        tempLabel.text = "\(weather.main.temp)°C"
+        tempLabel.text = "\(formatTemp(temp: weather.main.temp))°C"
         descriptionLabel.text = weather.weather.first?.description
-        sunriseLabel.text = weather.sys.sunriseDate
-        sunsetLabel.text = weather.sys.sunsetDate
+        // sunriseLabel.text = weather.sys.sunrise
+        // sunsetLabel.text = weather.sys.sunset
+        sunriseLabel.text = convertUnixTimestampToTime(unixTimestamp: weather.sys.sunrise, timezone: weather.timezone)
+        sunsetLabel.text = convertUnixTimestampToTime(unixTimestamp: weather.sys.sunset, timezone: weather.timezone)
+
         windLabel.text = "\(weather.wind.speed) km/h"
         weatherIcon.image = weather.weather.first?.iconImage
         sunriseIcon.image = UIImage(systemName: "sunrise")
         sunsetIcon.image = UIImage(systemName: "sunset")
         windIcon.image = UIImage(systemName: "wind.circle")
     }
+
+    // convert unix timestamp to time string for sunrise and sunset labels (HH:mm) that takes into account the timezone
+    private func convertUnixTimestampToTime(unixTimestamp: Int, timezone: Int) -> String {
+        let date = Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: timezone)
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: date)
+    }
+
+    // format temperature to 1 decimal
+    private func formatTemp(temp: Double) -> String {
+        return String(format: "%.1f", temp)
+    }
+    
+    
 }
