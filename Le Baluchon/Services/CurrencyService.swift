@@ -7,199 +7,212 @@
 
 import Foundation
 
-protocol CurrencyService {
-    func getCurrencyCodes(completion: @escaping ([String : String]) -> Void)
-    func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void)
-    func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void)
+protocol CurrencyServiceProtocol {
+func getCurrencyCodes(completion: @escaping ([String : String]) -> Void)
+func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void)
+func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void)
 }
 
-class CurrencyServiceImplementation: CurrencyService {
+class CurrencyServiceImplementation: CurrencyServiceProtocol {
 
-    // MARK: - Properties
-    private let accessKey: String
-    private let baseURL: String
+// MARK: - Properties
+private let accessKey: String
+private let baseURL: String
+let urlSession: any URLSessionProtocol
 
-    var symbols = [String: String]()
-    let currencyBase = "EUR"
-    var currencyCode = "USD"
-    var exchangeRate = Double()
-    var rates = [String: Double]()
-    var timestamp = Int()
+let currencyBase = "EUR"
+var currencyCode = "USD"
+var exchangeRate = Double()
 
-    
-    // MARK: - Initializer
-    init() {
-        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
-              let keys = NSDictionary(contentsOfFile: path),
-              let accessKey = keys["FixerApiKey"] as? String,
-              let baseURL = keys["FixerApiURL"] as? String else {
-            fatalError("Unable to read keys from Keys.plist")
-        }
-        self.accessKey = accessKey
-        self.baseURL = baseURL
+var symbols = [String: String]()
+var rates = [String: Double]()
 
-        getCurrencyCodes(completion: { _ in })
-        getRatesWithAPI(completion: { _ in })
+var timestamp = Int()
+
+
+// MARK: - Initializer
+    init(urlSession: any URLSessionProtocol = URLSession(configuration: .default)) {
+    self.urlSession = urlSession
+guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
+      let keys = NSDictionary(contentsOfFile: path),
+      let accessKey = keys["FixerApiKey"] as? String,
+      let baseURL = keys["FixerApiURL"] as? String else {
+    fatalError("Unable to read keys from Keys.plist")
+}
+self.accessKey = accessKey
+self.baseURL = baseURL
+
+getCurrencyCodes { [weak self] symbols in
+    self?.symbols = symbols
+    self?.getRatesWithAPI { rates in
+        self?.rates = rates ?? [:]
+    }
+}
+}
+
+// MARK: - Methods
+
+func getCurrencyCodes(completion: @escaping ([String: String]) -> Void) {
+if !self.symbols.isEmpty {
+    completion(self.symbols)
+    return
+}
+
+getCurrencyCodesWithAPI { [weak self] result in
+    switch result {
+    case .success(let symbols):
+        self?.symbols = symbols
+        completion(symbols)
+    case .failure(let error):
+        print("Error fetching currency codes: \(error)")
+        completion([:])
+    }
+}
+}
+
+func getCurrencyCodesWithAPI(completion: @escaping (Result<[String: String], Error>) -> Void) {
+let url = "\(baseURL)symbols"
+var request = URLRequest(url: URL(string: url)!, timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+request.addValue(accessKey, forHTTPHeaderField: "apikey")
+
+let task = self.urlSession.dataTask(with: request) { data, response, error in
+    if let error = error {
+        completion(.failure(error))
+        return
     }
     
-    // MARK: - Methods
-    
-    func getCurrencyCodes(completion: @escaping ([String : String]) -> Void) {
-        print("getCurrencyCodes")
-        if self.symbols.isEmpty {
-            print("getCurrencyCodesWithAPI")
-            getCurrencyCodesWithAPI()
-        }
-        completion(self.symbols)
+    guard let data = data else {
+        completion(.failure(CurrencyError.invalidData))
+        return
     }
-    
-    func getCurrencyCodesWithAPI() {
-        let url = "\(baseURL)symbols"
-        var request = URLRequest(url: URL(string: url)!,timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-        request.addValue(accessKey, forHTTPHeaderField: "apikey")
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data else {
-                print("no data")
-                return
-            }
-            
-            let json = try! JSONSerialization.jsonObject(with: data, options: []) as! [String: Any]
-            let symbols = json["symbols"] as! [String: String]
-            self.symbols = symbols
-            print("Symbols: \(symbols)")
 
+    do {
+        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+              let symbols = json["symbols"] as? [String: String] else {
+            completion(.failure(CurrencyError.invalidResponse))
+            return
         }
-        task.resume()
+        completion(.success(symbols))
+    } catch {
+        completion(.failure(error))
     }
-    
-    func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void) {
-        if (self.timestamp != 0 && Date().timeIntervalSince1970 - Double(self.timestamp) < 86400) {
-            print("SELF")
-            let exchangeRate = self.rates[country] ?? 0
-            print(exchangeRate)
-            var result = amount * exchangeRate
-            result = Double(round(100*result)/100)
-            completion(result)
-        } else {
-            print("API")
-            return convertWithAPI(amount: amount, completion: completion)
-        }
-        print(timestamp)
-    }
-    
-    func convertWithAPI(amount: Double, completion: @escaping (Double?) -> Void) {
-        let url = "\(baseURL)convert?to=\(currencyCode)&from=\(currencyBase)&amount=\(amount)"
-        guard let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let apiURL = URL(string: encodedURL) else {
-            print("Invalid URL: \(url)")
+}
+task.resume()
+}
+
+func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void) {
+self.currencyCode = country
+
+if self.timestamp != 0, Date().timeIntervalSince1970 - Double(self.timestamp) < 86400 {
+    let exchangeRate = self.rates[country] ?? 0
+    let result = amount * exchangeRate
+    let roundedResult = Double(round(100 * result) / 100)
+    completion(roundedResult)
+} else {
+    convertWithAPI(amount: amount) { result in
+        switch result {
+        case .success(let rate):
+            completion(rate)
+        case .failure( _):
             completion(nil)
+        }
+    }
+}
+}
+
+func convertWithAPI(amount: Double, completion: @escaping (Result<Double, Error>) -> Void) {
+let url = "\(baseURL)convert?to=\(currencyCode)&from=\(currencyBase)&amount=\(amount)"
+guard let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+      let apiURL = URL(string: encodedURL) else {
+    print("Invalid URL: \(url)")
+    completion(.failure(CurrencyError.invalidURL))
+    return
+}
+
+var request = URLRequest(url: apiURL, timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+request.addValue(accessKey, forHTTPHeaderField: "apikey")
+
+let task = self.urlSession.dataTask(with: request) { data, response, error in
+    if let error = error {
+        completion(.failure(error))
+        return
+    }
+    guard let jsonResponse = data else {
+        completion(.failure(CurrencyError.invalidData))
+        return
+    }
+    do {
+        let json = try JSONSerialization.jsonObject(with: jsonResponse, options: []) as? [String: Any]
+        guard let result = json?["result"] as? Double,
+              let info = json?["info"] as? [String: Any],
+              let timestamp = info["timestamp"] as? Int,
+              let rate = info["rate"] as? Double else {
+            completion(.failure(CurrencyError.invalidResponse))
             return
         }
         
-        var request = URLRequest(url: apiURL, timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-        request.addValue(accessKey, forHTTPHeaderField: "apikey")
+        self.timestamp = timestamp
+        self.exchangeRate = rate
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                completion(nil)
-                return
-            }
-            guard let jsonResponse = data else {
-                completion(nil)
-                return
-            }
-            guard let json = try? JSONSerialization.jsonObject(with: jsonResponse, options: []) as? [String: Any],
-                  let result = json["result"] as? Double,
-                  let info = json["info"] as? [String: Any],
-                  let timestamp = info["timestamp"] as? Int,
-                  let rate = info["rate"] as? Double else {
-                print("Error parsing JSON or extracting rate value")
-                completion(nil)
-                return
-            }
-            
-            self.timestamp = timestamp
-            self.exchangeRate = rate
-            
-            print(String(data: jsonResponse, encoding: .utf8)!)
-            let roundedResult = Double(round(100*result)/100)
-            completion(roundedResult)
-        }
-        task.resume()
+        let roundedResult = Double(round(100 * result) / 100)
+        completion(.success(roundedResult))
+    } catch {
+        completion(.failure(error))
     }
+}
+task.resume()
+}
 
+func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void) {
+
+if !self.rates.isEmpty {
+    completion(self.rates)
+    return
+}
+
+let currencyCodes = symbols.keys.joined(separator: ",")
+let url = "\(baseURL)latest?symbols=\(currencyCodes)&base=\(currencyBase)"
+
+guard let apiURL = URL(string: url) else {
+    print("Invalid URL: \(url)")
+    completion(nil)
+    return
+}
+
+var request = URLRequest(url: apiURL, timeoutInterval: Double.infinity)
+request.httpMethod = "GET"
+request.addValue(accessKey, forHTTPHeaderField: "apikey")
+
+    let task = self.urlSession.dataTask(with: request) { data, response, error in
+    if let error = error {
+        print("Error: \(error)")
+        completion(nil)
+        return
+    }
     
-    func getExchangeRate(fromCurrency: String, toCurrency: String, completion: @escaping (Double?) -> Void) {
-        let url = "\(baseURL)latest?symbols=\(toCurrency)&base=\(fromCurrency)"
-        var request = URLRequest(url: URL(string: url)!,timeoutInterval: Double.infinity)
-        request.httpMethod = "GET"
-        request.addValue(accessKey, forHTTPHeaderField: "apikey")
+    guard let jsonData = data else {
+        print("No data received")
+        completion(nil)
+        return
+    }
+    
+    do {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let response = try decoder.decode(CurrencyRatesResponse.self, from: jsonData)
         
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                print("Error: \(error)")
-                completion(nil)
-                return
-            }
-            guard let jsonResponse = data else {
-                print("No data received")
-                completion(nil)
-                return
-            }
-            guard let json = try? JSONSerialization.jsonObject(with: jsonResponse, options: []) as? [String: Any],
-                  let rates = json["rates"] as? [String: Double] else {
-                print("Error parsing JSON or extracting rate value")
-                completion(nil)
-                return
-            }
-            
-            let exchangeRate = rates[toCurrency]
-            completion(exchangeRate)
-        }
-        task.resume()
+        self.timestamp = response.timestamp
+        self.rates = response.rates
+        
+        completion(response.rates)
+    } catch {
+        print("Error parsing JSON or extracting rate value: \(error)")
+        completion(nil)
     }
+}
+task.resume()
 
-     func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void) {
-        if self.rates.isEmpty {
-            var currencyCode = [String].self()
-            for (key, _) in symbols {
-                currencyCode.append(key)
-            }
-            let currencyCodes = currencyCode.joined(separator: ",")
-            
-            let url = "\(baseURL)latest?symbols=\(currencyCodes)&base=\(currencyBase)"
-            var request = URLRequest(url: URL(string: url)!,timeoutInterval: Double.infinity)
-            request.httpMethod = "GET"
-            request.addValue(accessKey, forHTTPHeaderField: "apikey")
-            
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                
-                guard let jsonResponse = data else {
-                    print("No data received")
-                    completion(nil)
-                    return
-                }
-                
-                guard let json = try? JSONSerialization.jsonObject(with: jsonResponse, options: []) as? [String: Any],
-                      let rates = json["rates"] as? [String: Double],
-                      let info = json["info"] as? [String: Any],
-                      let timestamp = info["timestamp"] as? Int
-                      
-                else {
-                    completion(nil)
-                    return
-                }
-                
-                self.timestamp = timestamp
-                self.rates = rates
-
-                completion(rates)
-            }
-            task.resume()
-        }
-    }
+}
 }

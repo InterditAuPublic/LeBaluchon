@@ -140,11 +140,11 @@
             </objects>
             <point key="canvasLocation" x="363" y="458"/>
         </scene>
-        <!--Item-->
+        <!--Weather-->
         <scene sceneID="e1B-yf-Z1c">
             <objects>
                 <navigationController id="6Ux-Lr-ciZ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" image="cloud.sun" catalog="system" id="nlH-YW-W8A"/>
+                    <tabBarItem key="tabBarItem" title="Weather" image="cloud.sun" catalog="system" id="nlH-YW-W8A"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="udr-KC-Zv1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -224,7 +224,7 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1A-Va-4EF">
                                 <rect key="frame" x="16" y="112" width="361" height="622"/>
-                                <string key="text">this is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryy long text</string>
+                                <mutableString key="text">this is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryythis is a verrryy long text</mutableString>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

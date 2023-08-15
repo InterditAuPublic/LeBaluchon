@@ -5,34 +5,86 @@
 //  Created by Melvin Poutrel on 27/07/2023.
 //
 
-import Foundation
+import XCTest
 @testable import Le_Baluchon
 
-class URLSessionDataTaskMock: URLSessionDataTask {
-    private let closure: () -> Void
-    init(closure: @escaping () -> Void) {
-        self.closure = closure
+final class ServiceTests: XCTestCase {
+    
+    func testLoadData() {
+        
+        // Given
+        let text = "bonjour"
+        let data = Data(text.utf8)
+        let mockUrlSession = URLSessionMock()
+        mockUrlSession.data = data
+        let s = Service()
+        s.urlSession = mockUrlSession
+        
+        let expectation = XCTestExpectation()
+        
+        // When
+        s.loadData { result in
+            
+            // Then
+            XCTAssertTrue(result)
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 0.1) // 0.1 is enough because it synchronous
     }
-    // override resume and call the closure
+    
+    func testLoadData_false() {
+        
+        // Given
+        let text = "zelfjnkzefzerfk"
+        let data = Data(text.utf8)
+        let mockUrlSession = URLSessionMock()
+        mockUrlSession.data = data
+        let s = Service()
+        s.urlSession = mockUrlSession
+        
+        let expectation = XCTestExpectation()
+        
+        // When
+        s.loadData { result in
+            
+            // Then
+            XCTAssertFalse(result)
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 0.1) // 0.1 is enough because it synchronous
+    }
+    
+}
 
-    override func resume() {
-        closure()
+class URLSessionDataTaskMock: URLSessionDataTaskProtocol {
+    func cancel() {
+    }
+    
+    let completionHandler: () -> Void
+    
+    init(completionHandler: @escaping () -> Void) {
+        self.completionHandler = completionHandler
+    }
+    
+    func resume() {
+        completionHandler()
     }
 }
 
-class URLSessionMock: URLSession {
-    typealias CompletionHandler = (Data?, URLResponse?, Error?) -> Void
-    // data and error can be set to provide data or an error
+class URLSessionMock: URLSessionProtocol {
+    
     var data: Data?
+    var urlResponse: URLResponse?
     var error: Error?
-    override func dataTask(
-        with url: URL,
-        completionHandler: @escaping CompletionHandler
-        ) -> URLSessionDataTask {
-        let data = self.data
-        let error = self.error
-        return URLSessionDataTaskMock {
-            completionHandler(data, nil, error)
-        } as URLSessionDataTask
+    
+    func dataTask(with request: URLRequest, completionHandler: @escaping @Sendable (Data?, URLResponse?, Error?) -> Void) -> some URLSessionDataTaskProtocol {
+        return URLSessionDataTaskMock(completionHandler: {
+            completionHandler(self.data, self.urlResponse, self.error)
+        })
     }
+    
 }

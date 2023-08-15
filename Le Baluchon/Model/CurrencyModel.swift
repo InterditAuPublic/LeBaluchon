@@ -12,16 +12,18 @@ struct CurrencySymbolResponse: Codable {
     let symbols: [String: String]
 }
 
-struct CurrencyResponse: Codable {
+struct CurrencyRatesResponse: Codable {
     let success: Bool
     let timestamp: Int
     let base: String
     let date: String
     let rates: [String: Double]
 }
-struct CurrencyError: Codable {
-    let code: Int
-    let error: String
+
+enum CurrencyError: Error {
+    case invalidURL
+    case invalidData
+    case invalidResponse
 }
 
 

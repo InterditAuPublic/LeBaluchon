@@ -17,6 +17,7 @@ class TranslationViewController: UIViewController {
     private var textToTranslate: String = ""
     private var translatedText: String = ""
     private var tapGesture: UITapGestureRecognizer?
+//    private var alert = UIAlertHelper()
     
     // MARK: View Life cycles
     override func viewDidLoad() {
@@ -144,8 +145,8 @@ class TranslationViewController: UIViewController {
             if success, let response = response {
                 self.translatedText = response.translatedText
                 self.translatedTextView.text = self.translatedText
-
             } else {
+                
                 self.translatedTextView.text = "Error"
             }
         }

@@ -51,10 +51,10 @@ class WeatherViewController: UIViewController, UIScrollViewDelegate {
         pageControl.center = CGPoint(x: scrollView.frame.size.width / 2, y: scrollView.frame.size.height - 20)
         
         city1View.cityReusableView.frame = CGRect(x: 0, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-        city1View.cityReusableView.backgroundColor = .red
+        city1View.cityReusableView.backgroundColor = .lightGray
         
         city2View.cityReusableView.frame = CGRect(x: scrollView.frame.size.width, y: 0, width: scrollView.frame.size.width, height: scrollView.frame.size.height)
-        city2View.cityReusableView.backgroundColor = .yellow
+        city2View.cityReusableView.backgroundColor = .lightGray
         
         scrollView.addSubview(city1View.cityReusableView)
         scrollView.addSubview(city2View.cityReusableView)

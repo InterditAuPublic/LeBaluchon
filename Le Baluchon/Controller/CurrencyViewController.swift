@@ -49,7 +49,6 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     // set the selected row of the picker view to "USD" key by default
     func setPickerView() {
         let sortedSymbols = currencyDictionary.sorted { $0.key < $1.key }
-        print("Sorted Symbols \(currencyDictionary.count)")
         for (index, element) in sortedSymbols.enumerated() {
             if element.key == "USD" {
                 countryPicker.selectRow(index, inComponent: 0, animated: true)
@@ -74,13 +73,27 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         getRate.setTitleColor(.white, for: .normal)
         getRate.layer.cornerRadius = 5
         getRate.layer.masksToBounds = true
+
         self.currencyDictionary = currencyService.symbols
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(currencyCodeTextFieldTapped))
-            currencyCodeTextField.addGestureRecognizer(tapGesture)
+        if currencyDictionary.isEmpty {
+            // Display an alert indicating data is not available yet
+            let alert = UIAlertController(title: "Data Not Available", message: "Currency data is still loading. Please try again later.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+        } else {
+            // Set picker's data source and delegate only if data is available
+            countryPicker.delegate = self
+            countryPicker.dataSource = self
+        }
+
         
-        countryPicker.delegate = self
-        countryPicker.dataSource = self
+        currencyCodeTextField.isUserInteractionEnabled = false
+
+        // Setup tap gesture to dismiss keyboard and picker
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        view.addGestureRecognizer(tapGesture)
+
     }
     
     // MARK: - Outlets
@@ -99,11 +112,13 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         currencyCodeTextField.resignFirstResponder()
         
         guard let amountText = amountTextField.text,
+              !amountText.isEmpty,
               let amount = Double(amountText),
-              let country = currencyCodeTextField.text
+              let country = currencyCodeTextField.text,
+              !country.isEmpty
         else {
-            UIAlertHelper.showAlertWithTitle("Error", message: "Oops, you must provide an Amount value", from: self)
-            usdAmountLabel.text = "Oops, you must provide an Amount value"
+            UIAlertHelper.showAlertWithTitle("Error", message: "Please provide both Amount and Currency Code.", from: self)
+            usdAmountLabel.text = "Error: Invalid input"
             getRate.setTitle("Convert", for: .normal)
             getRate.configuration?.showsActivityIndicator = false
             return
@@ -111,8 +126,6 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         currencyService.convert(amount: amount, country: country) { usdAmount in
             DispatchQueue.main.async { [self] in
-                getRate.setTitle("Get", for: .normal)
-                getRate.configuration?.showsActivityIndicator = false
                 if let usdAmount = usdAmount {
                     usdAmountLabel.text = "\(usdAmount) \(country)"
                 } else {
@@ -121,12 +134,19 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
                 }
             }
         }
+        getRate.setTitle("Convert", for: .normal)
+        getRate.configuration?.showsActivityIndicator = false
     }
     
     @objc private func currencyCodeTextFieldTapped() {
-        // Show picker when currencyCodeTextField is tapped
         currencyCodeTextField.inputView = countryPicker
         currencyCodeTextField.becomeFirstResponder()
+    }
+
+    @objc private func handleTap() {
+        // Dismiss keyboard and picker when tapped outside
+        amountTextField.resignFirstResponder()
+        currencyCodeTextField.resignFirstResponder()
     }
 }
 

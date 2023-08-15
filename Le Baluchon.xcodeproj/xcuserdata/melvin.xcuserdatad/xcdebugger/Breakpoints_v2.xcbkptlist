@@ -7,33 +7,81 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "354E7D6C-A5A1-4B9A-B1BA-BB8900D86E88"
-            shouldBeEnabled = "No"
+            uuid = "68545E4E-7907-40F1-A753-F8802684CA63"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Le Baluchon/Model/WeatherModel.swift"
+            filePath = "Le Baluchon/Services/CurrencyService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "98"
-            endingLineNumber = "98"
-            landmarkName = "WeatherIcon"
-            landmarkType = "13">
+            startingLineNumber = "188"
+            endingLineNumber = "188"
+            landmarkName = "getRatesWithAPI(completion:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "68545E4E-7907-40F1-A753-F8802684CA63 - 78d5866edaefa114"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Le_Baluchon.CurrencyServiceImplementation.getRatesWithAPI(completion: (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Swift.Double&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Le Baluchon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/melvin/Workspace/ios/Le%20Baluchon/Le%20Baluchon/Services/CurrencyService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "188"
+                  endingLineNumber = "188"
+                  offsetFromSymbolStart = "1468">
+               </Location>
+               <Location
+                  uuid = "68545E4E-7907-40F1-A753-F8802684CA63 - 27f31983a1a5c7fb"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 @Sendable (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__C.NSURLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in Le_Baluchon.CurrencyServiceImplementation.getRatesWithAPI(completion: (Swift.Optional&lt;Swift.Dictionary&lt;Swift.String, Swift.Double&gt;&gt;) -&gt; ()) -&gt; ()"
+                  moduleName = "Le Baluchon"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/melvin/Workspace/ios/Le%20Baluchon/Le%20Baluchon/Services/CurrencyService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "189"
+                  endingLineNumber = "189"
+                  offsetFromSymbolStart = "284">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "7586A143-0409-4752-AF13-5767C972CD5C"
+            uuid = "E29180BB-4513-4BF8-AC09-2B6A5F0F186E"
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Le Baluchon/Model/WeatherModel.swift"
+            filePath = "Le Baluchon/Services/CurrencyService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "37"
-            endingLineNumber = "37"
-            landmarkName = "iconImage"
-            landmarkType = "24">
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "getRatesWithAPI(completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "79D9DF12-D4AC-4990-A736-122331FF1EAF"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Le Baluchon/Services/CurrencyService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "getRatesWithAPI(completion:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

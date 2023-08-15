@@ -14,7 +14,7 @@ protocol TranslationService {
 
 class TranslationServiceImplementation: TranslationService {
     var task: URLSessionDataTask?
-    var session: URLSession
+    let session: any URLSessionProtocol
     private let accessKey: String
     private let baseURL: String
 
@@ -36,28 +36,34 @@ class TranslationServiceImplementation: TranslationService {
             return
         }
         task?.cancel()
-        task = session.dataTask(with: url) { (data, response, error) in
+        let urlRequest = URLRequest(url: url)
+        task = session.dataTask(with: urlRequest) { (data, response, error) in
             DispatchQueue.main.async {
+                print("get translation")
                 guard let data = data, error == nil else {
+                    print("pas data")
                     callback(false, nil)
                     return
                 }
                 guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                    print("pas reponse ou pas 200")
                     callback(false, nil)
                     return
                 }
                 guard let responseJSON = try? JSONDecoder().decode(Translation.self, from: data) else {
+                    print("pas JSON")
                     callback(false, nil)
                     return
                 }
                 guard let text = responseJSON.data.translations[0].translatedText.removingPercentEncoding else {
+                    print("pas translated")
                     callback(false, nil)
                     return
                 }
                 let translationResponse = TranslationResponse(translatedText: text)
                 callback(true, translationResponse)
             }
-        }
+        } as? URLSessionDataTask
         task?.resume()
     }
 }
