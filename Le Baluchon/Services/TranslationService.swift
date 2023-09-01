@@ -9,17 +9,19 @@ import Foundation
 
 // MARK: - TranslationService
 protocol TranslationService {
-    func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void)
+    func getTranslation(request: TranslationRequest, completion: @escaping (Result<TranslationResponse, Error>) -> Void)
 }
 
+
 class TranslationServiceImplementation: TranslationService {
+
     var task: URLSessionDataTask?
-    let session: any URLSessionProtocol
+    let urlSession: any URLSessionProtocol
     private let accessKey: String
     private let baseURL: String
 
-    init(session: URLSession = URLSession(configuration: .default)) {
-        self.session = session
+    init(urlSession: any URLSessionProtocol = URLSession(configuration: .default)) {
+        self.urlSession = urlSession
         guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
               let keys = NSDictionary(contentsOfFile: path),
               let accessKey = keys["CloudTranslationApiKey"] as? String,
@@ -30,40 +32,78 @@ class TranslationServiceImplementation: TranslationService {
         self.baseURL = baseURL
     }
 
-    func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void) {
-        guard let url = URL(string: "\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)") else {
-            callback(false, nil)
-            return
-        }
-        task?.cancel()
-        let urlRequest = URLRequest(url: url)
-        task = session.dataTask(with: urlRequest) { (data, response, error) in
-            DispatchQueue.main.async {
-                print("get translation")
-                guard let data = data, error == nil else {
-                    print("pas data")
-                    callback(false, nil)
-                    return
-                }
-                guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
-                    print("pas reponse ou pas 200")
-                    callback(false, nil)
-                    return
-                }
-                guard let responseJSON = try? JSONDecoder().decode(Translation.self, from: data) else {
-                    print("pas JSON")
-                    callback(false, nil)
-                    return
-                }
-                guard let text = responseJSON.data.translations[0].translatedText.removingPercentEncoding else {
-                    print("pas translated")
-                    callback(false, nil)
+    func getTranslation(request: TranslationRequest, completion: @escaping (Result<TranslationResponse, Error>) -> Void) {
+    guard let url = URL(string: "\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)") else {
+        completion(.failure(NSError(domain: "Invalid URL", code: -1, userInfo: nil)))
+        return
+    }
+    
+    task?.cancel()
+    let urlRequest = URLRequest(url: url)
+    
+    task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
+        DispatchQueue.main.async {
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                completion(.failure(NSError(domain: "Invalid response", code: 200, userInfo: nil)))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "No data received", code: -1, userInfo: nil)))
+                return
+            }
+            
+            do {
+                let responseJSON = try JSONDecoder().decode(Translation.self, from: data)
+                guard let text = responseJSON.data.translations.first?.translatedText.removingPercentEncoding else {
+                    completion(.failure(NSError(domain: "Invalid translation data", code: -1, userInfo: nil)))
                     return
                 }
                 let translationResponse = TranslationResponse(translatedText: text)
-                callback(true, translationResponse)
+                completion(.success(translationResponse))
+            } catch {
+                completion(.failure(error))
             }
-        } as? URLSessionDataTask
-        task?.resume()
-    }
+        }
+    } as? URLSessionDataTask
+    task?.resume()
+}
+
+
+    // func getTranslation(request: TranslationRequest, callback: @escaping (Bool, TranslationResponse?) -> Void) {
+    //     guard let url = URL(string: "\(baseURL)?key=\(accessKey)&source=\(request.source)&target=\(request.target)&q=\(request.text)") else {
+    //         callback(false, nil)
+    //         return
+    //     }
+    //     task?.cancel()
+    //     let urlRequest = URLRequest(url: url)
+    //     task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
+    //         DispatchQueue.main.async {
+    //             guard let data = data, error == nil else {
+    //                 callback(false, nil)
+    //                 return
+    //             }
+    //             guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+    //                 callback(false, nil)
+    //                 return
+    //             }
+    //             guard let responseJSON = try? JSONDecoder().decode(Translation.self, from: data) else {
+    //                 callback(false, nil)
+    //                 return
+    //             }
+    //             guard let text = responseJSON.data.translations[0].translatedText.removingPercentEncoding else {
+    //                 callback(false, nil)
+    //                 return
+    //             }
+    //             let translationResponse = TranslationResponse(translatedText: text)
+    //             callback(true, translationResponse)
+    //         }
+    //     } as? URLSessionDataTask
+    //     task?.resume()
+    // }
 }

@@ -102,10 +102,14 @@ override func tearDown() {
         // Given
         let json = """
         {
-            "rates": {
-                "USD": 1.1234,
-                "EUR": 0.8901,
-            }
+          "base": "EUR",
+          "date": "2022-04-14",
+          "rates": {
+            "USD": 1.1234,
+            "EUR": 0.8901,
+          },
+          "success": true,
+          "timestamp": 1519296206
         }
         """
         let data = Data(json.utf8)
@@ -168,10 +172,19 @@ override func tearDown() {
         // Given
         let json = """
         {
-            "rates": {
-                "USD": 1.1234,
-                "EUR": 0.8901,
-            }
+          "date": "2018-02-22",
+          "historical": "",
+          "info": {
+            "rate": 148.972231,
+            "timestamp": 1519328414
+          },
+          "query": {
+            "amount": 25,
+            "from": "GBP",
+            "to": "JPY"
+          },
+          "result": 3724.305775,
+          "success": true
         }
         """
         let data = Data(json.utf8)
@@ -181,7 +194,7 @@ override func tearDown() {
         // When
         currencyService.convert(amount: 1.0, country: "USD") { result in
             // Then
-            XCTAssertEqual(result, 1.1234)
+            XCTAssertEqual(result, 3724.31)
             expectation.fulfill()
         }
     }

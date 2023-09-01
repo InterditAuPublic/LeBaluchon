@@ -78,16 +78,14 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         
         if currencyDictionary.isEmpty {
             // Display an alert indicating data is not available yet
-            let alert = UIAlertController(title: "Data Not Available", message: "Currency data is still loading. Please try again later.", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-            present(alert, animated: true, completion: nil)
+            UIAlertHelper.showAlertWithTitle("Data Not Available", message: "Currency data is still loading. Please try again later.", from: self)
+            
         } else {
             // Set picker's data source and delegate only if data is available
             countryPicker.delegate = self
             countryPicker.dataSource = self
         }
 
-        
         currencyCodeTextField.isUserInteractionEnabled = false
 
         // Setup tap gesture to dismiss keyboard and picker

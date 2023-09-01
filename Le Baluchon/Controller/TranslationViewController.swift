@@ -130,26 +130,32 @@ class TranslationViewController: UIViewController {
     
     @IBAction func onTranslateTapped(_ sender: UIButton) {
 
-        guard let textToTranslate = textToTranslateTextView.text, !textToTranslate.isEmpty else {
-            return UIAlertHelper.showAlertWithTitle("Error", message: "Please enter a text to translate", from: self)
-        }
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        textToTranslateTextView.resignFirstResponder()
-        self.textToTranslate = textToTranslateTextView.text ?? ""
-        self.textToTranslate = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
 
-        translationService.getTranslation(request: TranslationRequest(source: "fr", target: "en", text: self.textToTranslate)) { (success, response) in
-            self.activityIndicator.isHidden = true
-            self.activityIndicator.stopAnimating()
-            if success, let response = response {
-                self.translatedText = response.translatedText
-                self.translatedTextView.text = self.translatedText
-            } else {
-                
-                self.translatedTextView.text = "Error"
+            guard let textToTranslate = textToTranslateTextView.text, !textToTranslate.isEmpty else {
+                UIAlertHelper.showAlertWithTitle("Error", message: "Please enter a text to translate", from: self)
+                return
             }
-        }
+            
+            activityIndicator.isHidden = false
+            activityIndicator.startAnimating()
+            textToTranslateTextView.resignFirstResponder()
+            
+            let textToTranslateEncoded = textToTranslate.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) ?? ""
+            let translationRequest = TranslationRequest(source: "fr", target: "en", text: textToTranslateEncoded)
+            
+            translationService.getTranslation(request: translationRequest) { result in
+                self.activityIndicator.isHidden = true
+                self.activityIndicator.stopAnimating()
+                
+                switch result {
+                case .success(let response):
+                    self.translatedText = response.translatedText
+                    self.translatedTextView.text = self.translatedText
+                case .failure(let error):
+                    self.translatedTextView.text = "Error: \(error.localizedDescription)"
+                }
+            }
+
     }
     
     // MARK: - Tap Gesture

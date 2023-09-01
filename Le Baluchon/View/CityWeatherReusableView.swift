@@ -11,7 +11,7 @@ import UIKit
 class CityWeatherReusableView: UIView {
     
     // MARK: - Outlets
-
+    
     @IBOutlet var cityReusableView: UIView!
     @IBOutlet weak var cityLabel: UILabel!
     @IBOutlet weak var weatherIcon: UIImageView!
@@ -27,7 +27,7 @@ class CityWeatherReusableView: UIView {
     @IBOutlet weak var sunriseVerticalStackView: UIStackView!
     @IBOutlet weak var windSpeedVerticalStackView: UIStackView!
     @IBOutlet weak var sunsetVerticalStackView: UIStackView!
-
+    
     // MARK: - Properties
     
     private let weatherService = WeatherServiceImplementation()
@@ -35,7 +35,7 @@ class CityWeatherReusableView: UIView {
     private weak var vc : WeatherViewController?
     
     // MARK: - Init
-
+    
     init(city: String) {
         self.city = city
         super.init(frame: .zero)
@@ -57,7 +57,7 @@ class CityWeatherReusableView: UIView {
         cityReusableView.frame = bounds
         cityReusableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
     }
-
+    
     func prepareView() {
         cityLabel.text = city
         cityLabel.font = UIFont.boldSystemFont(ofSize: 30)
@@ -80,7 +80,7 @@ class CityWeatherReusableView: UIView {
         sunriseVerticalStackView.spacing = 10
         sunsetVerticalStackView.spacing = 10
         windSpeedVerticalStackView.spacing = 10
-        // aling the stack views to the center of the view and set the spacing between them 
+        // aling the stack views to the center of the view and set the spacing between them
         infoHorizontalStackView.alignment = .center
         infoHorizontalStackView.distribution = .equalSpacing
         sunriseVerticalStackView.alignment = .center
@@ -89,7 +89,7 @@ class CityWeatherReusableView: UIView {
         sunsetVerticalStackView.distribution = .equalSpacing
         windSpeedVerticalStackView.alignment = .center
         windSpeedVerticalStackView.distribution = .equalSpacing
-
+        
         // place infoHorizontalStackView under the descriptionLabel and set the spacing between them, align the stack view to the center of the view
         cityReusableView.addSubview(infoHorizontalStackView)
         infoHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -98,17 +98,24 @@ class CityWeatherReusableView: UIView {
         infoHorizontalStackView.trailingAnchor.constraint(equalTo: cityReusableView.trailingAnchor, constant: -20).isActive = true
         infoHorizontalStackView.bottomAnchor.constraint(equalTo: cityReusableView.bottomAnchor, constant: -20).isActive = true
     }
-
+    
     // MARK: - Methods
     
     private func getCityWeather(city: String) {
-        weatherService.getWeather(city: city) { [weak self] success, weatherResponse in
-            guard let self = self, success, let weatherResponse = weatherResponse else {
-                            //    UIAlertHelper.showAlertWithTitle("Error", message: "Unable to get weather for \(city)", from: self!.vc!)
-                return
-            }
-            DispatchQueue.main.async {
-                self.updateView(weather: weatherResponse)
+        weatherService.getWeather(city: city) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let weatherResponse):
+                DispatchQueue.main.async {
+                    self.updateView(weather: weatherResponse)
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    if let vc = self.vc {
+                        UIAlertHelper.showAlertWithTitle("Error", message: "errorMessage", from: vc)
+                    }
+                }
             }
         }
     }
