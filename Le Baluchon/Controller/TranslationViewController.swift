@@ -46,69 +46,96 @@ class TranslationViewController: UIViewController {
     
     private func setupConstraints() {
          // Contraintes pour la UIScrollView
-         scrollView.translatesAutoresizingMaskIntoConstraints = false
-         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-         scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-         scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+scrollView.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+    scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+    scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+    scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+])
 
-         // Contraintes pour la UIStackView
-         verticalStackView.translatesAutoresizingMaskIntoConstraints = false
-         verticalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-         verticalStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
-         verticalStackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-         verticalStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
-         verticalStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        
-         
-         // Contraintes pour les UIView à l'intérieur de la UIStackView (textToTranslateViewContainer et translatedTextViewContrainer doivent être de taille égale)
-         textToTranslateViewContainer.translatesAutoresizingMaskIntoConstraints = false
-         translatedTextViewContrainer.translatesAutoresizingMaskIntoConstraints = false
-         textToTranslateViewContainer.widthAnchor.constraint(equalTo: translatedTextViewContrainer.widthAnchor).isActive = true
+// Contraintes pour la UIStackView
+verticalStackView.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    verticalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+    verticalStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+    verticalStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
+    verticalStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+    verticalStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+])
 
-         // Contraintes pour les Labels
-         let topSpacing: CGFloat = 16.0
-         textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
-         textToTranslateLabel.topAnchor.constraint(equalTo: textToTranslateViewContainer.topAnchor, constant: topSpacing).isActive = true
-         textToTranslateLabel.centerXAnchor.constraint(equalTo: textToTranslateViewContainer.centerXAnchor).isActive = true
+// Contraintes pour les UIView à l'intérieur de la UIStackView
+textToTranslateViewContainer.translatesAutoresizingMaskIntoConstraints = false
+translatedTextViewContrainer.translatesAutoresizingMaskIntoConstraints = false
 
-         translatedLabel.translatesAutoresizingMaskIntoConstraints = false
-         translatedLabel.topAnchor.constraint(equalTo: translatedTextViewContrainer.topAnchor, constant: topSpacing).isActive = true
-         translatedLabel.centerXAnchor.constraint(equalTo: translatedTextViewContrainer.centerXAnchor).isActive = true
+// Contraintes pour les Labels
+let topSpacing: CGFloat = 16.0
+textToTranslateLabel.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    textToTranslateLabel.topAnchor.constraint(equalTo: textToTranslateViewContainer.topAnchor, constant: topSpacing),
+    textToTranslateLabel.centerXAnchor.constraint(equalTo: textToTranslateViewContainer.centerXAnchor)
+])
 
-         // Contraintes pour les UITextView
-         textToTranslateTextView.translatesAutoresizingMaskIntoConstraints = false
-         translatedTextView.translatesAutoresizingMaskIntoConstraints = false
-         textToTranslateTextView.widthAnchor.constraint(equalTo: translatedTextView.widthAnchor).isActive = true
-         textToTranslateTextView.heightAnchor.constraint(equalToConstant: 150.0).isActive = true
-         translatedTextView.heightAnchor.constraint(equalToConstant: 150.0).isActive = true
+translatedLabel.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    translatedLabel.topAnchor.constraint(equalTo: translatedTextViewContrainer.topAnchor, constant: topSpacing),
+    translatedLabel.centerXAnchor.constraint(equalTo: translatedTextViewContrainer.centerXAnchor)
+])
+
+// Contraintes pour les UITextView
+textToTranslateTextView.translatesAutoresizingMaskIntoConstraints = false
+translatedTextView.translatesAutoresizingMaskIntoConstraints = false
         textToTranslateTextView.layer.borderWidth = 1.0 // Épaisseur de la bordure (en points)
         textToTranslateTextView.layer.borderColor = UIColor.lightGray.cgColor // Couleur de la bordure
         translatedTextView.layer.borderWidth = 1.0 // Épaisseur de la bordure (en points)
                 translatedTextView.layer.borderColor = UIColor.lightGray.cgColor
-        
-        translatedTextView.isEditable = false
+NSLayoutConstraint.activate([
+    textToTranslateTextView.leadingAnchor.constraint(equalTo: textToTranslateViewContainer.leadingAnchor, constant: 16.0),
+    textToTranslateTextView.trailingAnchor.constraint(equalTo: textToTranslateViewContainer.trailingAnchor, constant: -16.0),
+    translatedTextView.leadingAnchor.constraint(equalTo: translatedTextViewContrainer.leadingAnchor, constant: 16.0),
+    translatedTextView.trailingAnchor.constraint(equalTo: translatedTextViewContrainer.trailingAnchor, constant: -16.0)
+])
 
+// Contraintes pour la hauteur des UITextView
+NSLayoutConstraint.activate([
+    textToTranslateTextView.heightAnchor.constraint(equalToConstant: 150.0),
+    translatedTextView.heightAnchor.constraint(equalToConstant: 150.0)
+])
 
-         // Ajout d'une contrainte pour aligner les UITextView verticalement
-         textToTranslateTextView.centerYAnchor.constraint(equalTo: textToTranslateViewContainer.centerYAnchor).isActive = true
-         translatedTextView.centerYAnchor.constraint(equalTo: translatedTextViewContrainer.centerYAnchor).isActive = true
-         textToTranslateTextView.leadingAnchor.constraint(equalTo: textToTranslateViewContainer.leadingAnchor, constant: 16.0).isActive = true
-         textToTranslateTextView.trailingAnchor.constraint(equalTo: textToTranslateViewContainer.trailingAnchor, constant: -16.0).isActive = true
-         translatedTextView.leadingAnchor.constraint(equalTo: translatedTextViewContrainer.leadingAnchor, constant: 16.0).isActive = true
-         translatedTextView.trailingAnchor.constraint(equalTo: translatedTextViewContrainer.trailingAnchor, constant: -16.0).isActive = true
+// Desactiver le clique sur TransalateTextView
+translatedTextView.isEditable = false
 
-         // Contrainte pour le bouton de traduction
-         translateButton.translatesAutoresizingMaskIntoConstraints = false
-         translateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-         translateButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 16.0).isActive = true
-         translateButton.widthAnchor.constraint(equalToConstant: 200.0).isActive = true
-         translateButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+// Contrainte pour aligner les UITextView verticalement
+NSLayoutConstraint.activate([
+    textToTranslateTextView.centerYAnchor.constraint(equalTo: textToTranslateViewContainer.centerYAnchor),
+    translatedTextView.centerYAnchor.constraint(equalTo: translatedTextViewContrainer.centerYAnchor)
+])
 
-         // Contrainte pour l'indicateur d'activité
-         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-         activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-         activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+// Contrainte pour le bouton de traduction
+// translateButton.translatesAutoresizingMaskIntoConstraints = false
+// NSLayoutConstraint.activate([
+//     translateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//     translateButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 16.0),
+//     translateButton.widthAnchor.constraint(equalToConstant: 200.0),
+//     translateButton.heightAnchor.constraint(equalToConstant: 50.0)
+// ])
+
+// Contrainte pour le bouton de traduction, le placer en dessous de la TRanslatedTextView
+translateButton.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    translateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+    translateButton.topAnchor.constraint(equalTo: translatedTextView.bottomAnchor, constant: 1.0),
+    translateButton.widthAnchor.constraint(equalToConstant: 200.0),
+    translateButton.heightAnchor.constraint(equalToConstant: 40.0)
+])
+
+// Contrainte pour l'indicateur d'activité
+activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+NSLayoutConstraint.activate([
+    activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+    activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+])
+
      }
     
     // MARK: - Outlets
