@@ -94,7 +94,6 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         let url = "\(baseURL)convert?to=\(currencyCode)&from=\(currencyBase)&amount=\(amount)"
         guard let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
               let apiURL = URL(string: encodedURL) else {
-            print("Invalid URL: \(url)")
             completion(.failure(CurrencyError.invalidURL))
             return
         }
@@ -103,7 +102,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         request.httpMethod = "GET"
         request.addValue(accessKey, forHTTPHeaderField: "apikey")
         
-        let task = self.urlSession.dataTask(with: request) { data, response, error in
+        let task = self.urlSession.dataTask(with: request) { [weak self] data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
@@ -123,8 +122,8 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
                 let timestamp = response.info.timestamp
                 let rate = response.info.rate
                 
-                self.timestamp = timestamp
-                self.exchangeRate = rate
+                self?.timestamp = timestamp
+                self?.exchangeRate = rate
                 
                 let roundedResult = Double(round(100 * result) / 100)
                 completion(.success(roundedResult))

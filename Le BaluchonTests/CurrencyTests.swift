@@ -8,7 +8,7 @@
 import XCTest
 @testable import Le_Baluchon
 
-final class CurrencyTests: XCTestCase {
+final class CurrencyServiceTests: XCTestCase {
 
 var currencyService: CurrencyServiceImplementation!
 var mockUrlSession: URLSessionMock!
@@ -52,8 +52,11 @@ currencyService.getCurrencyCodesWithAPI { result in
             expectation.fulfill()
         case .failure(let error):
             XCTFail("Expected success, but got failure: \(error)")
+            expectation.fulfill()
+
         }
     }
+    wait(for: [expectation], timeout: 0.5)
 }
 
 func test_getCurrencyCodes_with_api_return_false() {
@@ -80,8 +83,10 @@ currencyService.getCurrencyCodesWithAPI { result in
             expectation.fulfill()
         case .failure(let error):
             XCTFail("Expected success, but got failure: \(error)")
+            expectation.fulfill()
         }
     }
+    wait(for: [expectation], timeout: 0.5)
 }
 
 func test_getCurrencyCodes_with_api_return_invalidData() {
@@ -97,6 +102,7 @@ func test_getCurrencyCodes_with_api_return_invalidData() {
             // Then
             XCTAssertNil(symbols)
             XCTFail("Expected failure, but got success")
+            expectation.fulfill()
 
         case .failure(let error):
             // check if error is not nil and is equal to the error we created CurrencyError.invalidData
@@ -105,6 +111,8 @@ func test_getCurrencyCodes_with_api_return_invalidData() {
             expectation.fulfill()
         }
 }
+wait(for: [expectation], timeout: 0.5)
+
 }
 
 
@@ -134,6 +142,7 @@ currencyService.getRatesWithAPI { rates in
     XCTAssertEqual(rates?["EUR"], 0.8901)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_getRates_with_api_fails() {
@@ -148,6 +157,7 @@ currencyService.getRatesWithAPI { rates in
     XCTAssertNil(rates)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_getRates_with_api_returns_nil() {
@@ -162,6 +172,7 @@ currencyService.getRatesWithAPI { rates in
     XCTAssertNil(rates)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_getRates_with_api_returns_empty_data() {
@@ -176,6 +187,7 @@ currencyService.getRatesWithAPI { rates in
     XCTAssertNil(rates)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_convert_with_api_succeeds() {
@@ -208,6 +220,7 @@ currencyService.convert(amount: 1.0, country: "USD") { result in
     XCTAssertEqual(result, 3724.31)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_convert_with_api_fails() {
@@ -222,6 +235,7 @@ currencyService.convert(amount: 1.0, country: "USD") { result in
     XCTAssertNil(result)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_convert_with_api_returns_nil() {
@@ -236,6 +250,7 @@ currencyService.convert(amount: 1.0, country: "USD") { result in
     XCTAssertNil(result)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 
 func test_convert_with_api_returns_empty_data() {
@@ -250,5 +265,6 @@ currencyService.convert(amount: 1.0, country: "USD") { result in
     XCTAssertNil(result)
     expectation.fulfill()
 }
+wait(for: [expectation], timeout: 0.5)
 }
 }

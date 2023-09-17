@@ -13,7 +13,7 @@ final class ServiceTests: XCTestCase {
     func testLoadData() {
         
         // Given
-        let text = "bonjour"
+        let text = "test"
         let data = Data(text.utf8)
         let mockUrlSession = URLSessionMock()
         mockUrlSession.data = data
@@ -31,7 +31,7 @@ final class ServiceTests: XCTestCase {
             expectation.fulfill()
         }
         
-        wait(for: [expectation], timeout: 0.1) // 0.1 is enough because it synchronous
+        wait(for: [expectation], timeout: 0.1)
     }
     
     func testLoadData_false() {

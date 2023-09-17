@@ -76,6 +76,8 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
 
         self.currencyDictionary = currencyService.symbols
         
+        // TODO: Delegate
+        
         if currencyDictionary.isEmpty {
             // Display an alert indicating data is not available yet
             UIAlertHelper.showAlertWithTitle("Data Not Available", message: "Currency data is still loading. Please try again later.", from: self)

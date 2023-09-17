@@ -8,7 +8,7 @@
 import XCTest
 @testable import Le_Baluchon    
 
-final class WeatherTests: XCTestCase {
+final class WeatherServiceTests: XCTestCase {
     
     var weatherService: WeatherServiceImplementation!
     var mockUrlSession: URLSessionMock!
@@ -27,67 +27,94 @@ final class WeatherTests: XCTestCase {
     
     func test_get_weather_from_api_succeded() {
         let json = """
-    {
-    "coord":{
-      "lon":-0.13,
-      "lat":51.51
-    },
-    "weather":[
-      {
-         "id":300,
-         "main":"Drizzle",
-         "description":"light intensity drizzle",
-         "icon":"09d"
-      }
-    ],
-    "base":"stations",
-    "main":{
-      "temp":280.32,
-      "pressure":1012,
-      "humidity":81,
-      "temp_min":279.15,
-      "temp_max":281.15
-    },
-    "visibility":10000,
-    "wind":{
-      "speed":4.1,
-      "deg":80
-    },
-    "clouds":{
-      "all":90
-    },
-    "dt":1485789600,
-    "sys":{
-      "type":1,
-      "id":5091,
-      "message":0.0103,
-      "country":"GB",
-      "sunrise":1485762037,
-      "sunset":1485794875
-    },
-    "id":2643743,
-    "name":"London",
-    "cod":200
-    }
+        {
+           "coord":{
+              "lon":-74.006,
+              "lat":40.7143
+           },
+           "weather":[
+              {
+                 "id":800,
+                 "main":"Clear",
+                 "description":"clear sky",
+                 "icon":"01d"
+              }
+           ],
+           "base":"stations",
+           "main":{
+              "temp":14.17,
+              "feels_like":13.52,
+              "temp_min":12.13,
+              "temp_max":15.68,
+              "pressure":1019,
+              "humidity":72
+           },
+           "visibility":10000,
+           "wind":{
+              "speed":7.6,
+              "deg":360,
+              "gust":10.73
+           },
+           "clouds":{
+              "all":0
+           },
+           "dt":1694777590,
+           "sys":{
+              "type":2,
+              "id":2008776,
+              "country":"US",
+              "sunrise":1694774189,
+              "sunset":1694819185
+           },
+           "timezone":-14400,
+           "id":5128581,
+           "name":"New York",
+           "cod":200
+        }
     """
         let data = Data(json.utf8)
         mockUrlSession.data = data
         
         let expectation = XCTestExpectation()
         
-        weatherService.getWeather(city: "London") { result in
+        weatherService.getWeather(city: "New York") { result in
             switch result {
             case .success(let weather):
-                XCTAssertEqual(weather.name, "London")
-                XCTAssertEqual(weather.main.temp, 280.32)
-                XCTAssertEqual(weather.weather[0].description, "light intensity drizzle")
+                XCTAssertEqual(weather.name, "New York")
+                XCTAssertEqual(weather.main.temp, 14.17)
+                XCTAssertEqual(weather.weather[0].description, "clear sky")
                 expectation.fulfill()
             case .failure(let error):
                 XCTFail("Expected success, but got failure: \(error)")
+                expectation.fulfill()
             }
         }
         
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 0.5)
+    }
+
+    func test_get_weather_from_api_failed() {
+        let json = """
+    """
+        let data = Data(json.utf8)
+        mockUrlSession.data = data
+        
+        let expectation = XCTestExpectation()
+        
+        weatherService.getWeather(city: "New York") { result in
+            print(result)
+            switch result {
+            case .success(let weather):
+                XCTAssertNil(weather)
+                expectation.fulfill()
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                XCTAssertEqual(error, WeatherServiceError.noData)
+                expectation.fulfill()
+            }
+        }
+        
+        wait(for: [expectation], timeout: 0.5)
     }
 }
 

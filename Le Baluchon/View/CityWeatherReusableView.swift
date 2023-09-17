@@ -39,7 +39,6 @@ indicator.hidesWhenStopped = true
 return indicator
 }()
 
-
 // MARK: - Init
 
 init(city: String) {
