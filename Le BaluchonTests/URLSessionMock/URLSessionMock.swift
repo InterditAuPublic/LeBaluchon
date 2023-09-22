@@ -13,7 +13,7 @@ final class ServiceTests: XCTestCase {
     func testLoadData() {
         
         // Given
-        let text = "test"
+        let text = "bonjour"
         let data = Data(text.utf8)
         let mockUrlSession = URLSessionMock()
         mockUrlSession.data = data

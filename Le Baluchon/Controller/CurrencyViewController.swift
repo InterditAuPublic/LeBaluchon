@@ -14,7 +14,7 @@ import UIKit
 /// The API key and the base URL are stored in the Keys.plist file.
 
 
-class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, CurrencyServiceDelegate {
     
     // MARK: - Properties
     private let currencyService = CurrencyServiceImplementation()
@@ -24,6 +24,14 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     // MARK: - Picker View
     private var currencyDictionary: [String: String] = [:]
+    
+    // MARK: CurrencyServiceDelegate method
+       func currencyDataDidUpdate() {
+           // This method will be called when data is available
+           DispatchQueue.main.async { [weak self] in
+               self?.countryPicker.reloadAllComponents()
+           }
+       }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -60,6 +68,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareView()
+        currencyService.delegate = self
         setPickerView()
     }
     
@@ -73,7 +82,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         getRate.setTitleColor(.white, for: .normal)
         getRate.layer.cornerRadius = 5
         getRate.layer.masksToBounds = true
-
+        
         self.currencyDictionary = currencyService.symbols
         
         // TODO: Delegate

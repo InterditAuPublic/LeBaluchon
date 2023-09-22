@@ -12,7 +12,6 @@ class TranslationServiceImplementation: TranslationServiceProtocol {
     private let baseURL: String
     private let urlSession: any URLSessionProtocol
     
-    // Utilisez la bonne syntaxe pour définir une variable URLSessionProtocol
     init(urlSession: any URLSessionProtocol =  URLSession(configuration: .default)) {
         self.urlSession = urlSession
         guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),

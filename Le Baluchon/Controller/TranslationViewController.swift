@@ -31,8 +31,8 @@ class TranslationViewController: UIViewController {
     // MARK: Prepare View
     private func prepareView() {
         
-        textToTranslateLabel.text = "Text to translate :"
-        translatedLabel.text = "Translation :"
+        textToTranslateLabel.text = "Text to translate (fr) :"
+        translatedLabel.text = "Translation (en) :"
         translateButton.setTitle("Translate", for: .normal)
         translateButton.setTitleColor(.white, for: .normal)
         translateButton.backgroundColor = .systemBlue
@@ -46,13 +46,13 @@ class TranslationViewController: UIViewController {
     
     private func setupConstraints() {
          // Contraintes pour la UIScrollView
-scrollView.translatesAutoresizingMaskIntoConstraints = false
-NSLayoutConstraint.activate([
-    scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-    scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-    scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-    scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-])
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
 
 // Contraintes pour la UIStackView
 verticalStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -60,7 +60,7 @@ NSLayoutConstraint.activate([
     verticalStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
     verticalStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
     verticalStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-    verticalStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+    verticalStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0),
     verticalStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
 ])
 
@@ -110,15 +110,6 @@ NSLayoutConstraint.activate([
     textToTranslateTextView.centerYAnchor.constraint(equalTo: textToTranslateViewContainer.centerYAnchor),
     translatedTextView.centerYAnchor.constraint(equalTo: translatedTextViewContrainer.centerYAnchor)
 ])
-
-// Contrainte pour le bouton de traduction
-// translateButton.translatesAutoresizingMaskIntoConstraints = false
-// NSLayoutConstraint.activate([
-//     translateButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//     translateButton.topAnchor.constraint(equalTo: verticalStackView.bottomAnchor, constant: 16.0),
-//     translateButton.widthAnchor.constraint(equalToConstant: 200.0),
-//     translateButton.heightAnchor.constraint(equalToConstant: 50.0)
-// ])
 
 // Contrainte pour le bouton de traduction, le placer en dessous de la TRanslatedTextView
 translateButton.translatesAutoresizingMaskIntoConstraints = false

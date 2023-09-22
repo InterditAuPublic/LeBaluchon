@@ -11,9 +11,15 @@ protocol CurrencyServiceProtocol {
     func getCurrencyCodes(completion: @escaping ([String : String]) -> Void)
     func convert(amount: Double, country: String, completion: @escaping (Double?) -> Void)
     func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void)
+    var delegate: CurrencyServiceDelegate? { get set }
+}
+
+protocol CurrencyServiceDelegate: AnyObject {
+    func currencyDataDidUpdate()
 }
 
 class CurrencyServiceImplementation: CurrencyServiceProtocol {
+    var delegate: CurrencyServiceDelegate?
     
     // MARK: - Properties
     private let accessKey: String
@@ -41,12 +47,13 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         }
         self.accessKey = accessKey
         self.baseURL = baseURL
-        
         getCurrencyCodes { [weak self] symbols in
             self?.symbols = symbols
+            self?.delegate?.currencyDataDidUpdate()
             self?.getRatesWithAPI { rates in
                 self?.rates = rates ?? [:]
             }
+            self?.delegate?.currencyDataDidUpdate()
         }
     }
     
