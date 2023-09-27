@@ -133,34 +133,6 @@ weatherService.getWeather(city: city) { [weak self] result in
 }
 }
 
-
-// private func getCityWeather(city: String) {
-//     activityIndicator.startAnimating()
-//     let deadlineTime = DispatchTime.now() + .seconds(10)
-
-//     weatherService.getWeather(city: city) { [weak self] result in
-//         DispatchQueue.main.asyncAfter(deadline: deadlineTime) {
-//             self?.activityIndicator.stopAnimating()
-        
-//             guard let self = self else { return }
-        
-//             switch result {
-//             case .success(let weatherResponse):
-//                 DispatchQueue.main.async {
-//                     self.updateView(weather: weatherResponse)
-//                 }
-//             case .failure(_):
-//                 DispatchQueue.main.async {
-//                     if let vc = self.vc {
-//                         UIAlertHelper.showAlertWithTitle("Oups!", message: "Sorry, something went wrong. Please try again later.", from: vc)
-//                     }
-//                 }
-//             }
-//         }
-//     }
-// }
-
-
 func updateView(weather: WeatherResponse) {
     cityLabel.text = weather.name
     tempLabel.text = "\(formatTemp(temp: weather.main.temp))°C"
