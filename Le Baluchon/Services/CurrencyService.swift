@@ -47,14 +47,14 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         }
         self.accessKey = accessKey
         self.baseURL = baseURL
-        getCurrencyCodes { [weak self] symbols in
-            self?.symbols = symbols
-            self?.delegate?.currencyDataDidUpdate()
-            self?.getRatesWithAPI { rates in
-                self?.rates = rates ?? [:]
-            }
-            self?.delegate?.currencyDataDidUpdate()
-        }
+//        getCurrencyCodes { [weak self] symbols in
+//            self?.symbols = symbols
+//            self?.delegate?.currencyDataDidUpdate()
+//            self?.getRatesWithAPI { rates in
+//                self?.rates = rates ?? [:]
+//            }
+//            self?.delegate?.currencyDataDidUpdate()
+//        }
     }
     
     // MARK: - Methods

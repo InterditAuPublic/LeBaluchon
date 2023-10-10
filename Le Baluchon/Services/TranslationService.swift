@@ -38,7 +38,8 @@ class TranslationServiceImplementation: TranslationServiceProtocol {
         let task = self.urlSession.dataTask(with: urlRequest) { data, response, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    completion(.failure(TranslationError.invalidURL))
+
+                    completion(.failure(TranslationError.networkError))
                     return
                 }
                 

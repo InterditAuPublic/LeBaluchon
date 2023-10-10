@@ -13,7 +13,6 @@ import UIKit
 /// It uses the Fixer API to get the exchange rate.
 /// The API key and the base URL are stored in the Keys.plist file.
 
-
 class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, CurrencyServiceDelegate {
     
     // MARK: - Properties
@@ -27,7 +26,6 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
     
     // MARK: CurrencyServiceDelegate method
        func currencyDataDidUpdate() {
-           // This method will be called when data is available
            DispatchQueue.main.async { [weak self] in
                self?.countryPicker.reloadAllComponents()
            }
@@ -60,6 +58,7 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         for (index, element) in sortedSymbols.enumerated() {
             if element.key == "USD" {
                 countryPicker.selectRow(index, inComponent: 0, animated: true)
+                currencyCodeTextField.text = currencyCode
             }
         }
     }

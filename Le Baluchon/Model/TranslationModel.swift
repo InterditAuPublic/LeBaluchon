@@ -33,39 +33,26 @@ struct TranslationResponse: Codable {
     let translatedText: String
 }
 
-// // MARK: - TranslationError
-// struct TranslationError: Codable, Error {
-//     let code: Int
-//     let message: String
-    
-//     enum CodingKeys: String, CodingKey {
-//         case code = "code"
-//         case message = "message"
-//     }
-
-//     init(code: Int, message: String) {
-//         self.code = code
-//         self.message = message
-//     }
-// }
-
 // MARK: - TranslationError
-enum TranslationError: Error, Equatable {
-    case invalidURL
-    case invalidResponse
-    case noData
-    case decodingError(String)
+ enum TranslationError: Error, Equatable {
+     case invalidURL
+     case invalidResponse
+     case networkError
+     case noData
+     case decodingError(String)
     
-    var localizedDescription: String {
-        switch self {
-        case .invalidURL:
-            return "Invalid URL"
-        case .invalidResponse:
-            return "Invalid response"
-        case .noData:
-            return "No data received"
-        case .decodingError(let message):
-            return "\(message)"
-        }
-    }
-}
+     var localizedDescription: String {
+         switch self {
+         case .invalidURL:
+             return "Invalid URL"
+         case .invalidResponse:
+             return "Invalid response"
+         case .networkError:
+             return "Network connection error"
+         case .noData:
+             return "No data received"
+         case .decodingError(let message):
+             return "\(message)"
+         }
+     }
+ }

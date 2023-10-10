@@ -59,8 +59,6 @@ private func commonInit() {
     let bundle = Bundle(for: type(of: self))
     bundle.loadNibNamed("CityWeatherReusableView", owner: self, options: nil)
     addSubview(cityReusableView)
-    cityReusableView.frame = bounds
-    cityReusableView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
 }
 
 func prepareView() {
@@ -100,14 +98,12 @@ activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 activityIndicator.centerXAnchor.constraint(equalTo: cityReusableView.centerXAnchor).isActive = true
 activityIndicator.centerYAnchor.constraint(equalTo: cityReusableView.centerYAnchor).isActive = true
     
-    // place infoHorizontalStackView under the descriptionLabel and set the spacing between them, align the stack view to the center of the view
-    cityReusableView.addSubview(infoHorizontalStackView)
+    // fix infoHorizontalStackView under the tempLabel
     infoHorizontalStackView.translatesAutoresizingMaskIntoConstraints = false
-    infoHorizontalStackView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 20).isActive = true
+    infoHorizontalStackView.topAnchor.constraint(equalTo: tempLabel.bottomAnchor, constant: 20).isActive = true
     infoHorizontalStackView.leadingAnchor.constraint(equalTo: cityReusableView.leadingAnchor, constant: 20).isActive = true
     infoHorizontalStackView.trailingAnchor.constraint(equalTo: cityReusableView.trailingAnchor, constant: -20).isActive = true
-    infoHorizontalStackView.bottomAnchor.constraint(equalTo: cityReusableView.bottomAnchor, constant: -20).isActive = true
-
+    
 }
 
 // MARK: - Methods

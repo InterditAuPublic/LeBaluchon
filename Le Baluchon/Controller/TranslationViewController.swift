@@ -148,7 +148,6 @@ NSLayoutConstraint.activate([
     
     @IBAction func onTranslateTapped(_ sender: UIButton) {
 
-
             guard let textToTranslate = textToTranslateTextView.text, !textToTranslate.isEmpty else {
                 UIAlertHelper.showAlertWithTitle("Error", message: "Please enter a text to translate", from: self)
                 return
@@ -169,10 +168,31 @@ NSLayoutConstraint.activate([
                 case .success(let response):
                     self.translatedText = response.translatedText
                     self.translatedTextView.text = self.translatedText
+
+                // case .failure()
                 case .failure(let error):
-                    self.translatedTextView.text = "Error: \(error.localizedDescription)"
+                    self.handleError(error: error)
+//                    self.translatedTextView.text = "Error: \(error.localizedDescription)"
                 }
             }
+
+    }
+
+    func handleError(error: TranslationError) {
+        let errorMessage: String
+        switch error {
+        case .invalidURL:
+            errorMessage = "Invalid URL"
+        case .networkError:
+            errorMessage = "No internet connection"
+        case .invalidResponse:
+            errorMessage = "Invalid response"
+        case .noData:
+            errorMessage = "No data received"
+        case .decodingError(let message):
+            errorMessage = message
+        }
+        UIAlertHelper.showAlertWithTitle("Error", message: errorMessage, from: self)
 
     }
     
