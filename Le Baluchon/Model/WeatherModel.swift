@@ -21,7 +21,6 @@ struct WeatherResponse: Codable {
     let id: Int
     let name: String
     let cod: Int
-    let error: WeatherError?
 }
 
 struct Coord: Codable {
@@ -91,7 +90,7 @@ enum WeatherServiceError: Error {
     case noData
     case networkError(Error)
     case decodingError(Error)
-    case apiError(WeatherError)
+    case apiError(String)
     
     var errorMessage: String {
         switch self {
@@ -103,8 +102,8 @@ enum WeatherServiceError: Error {
             return "Network Error: \(error.localizedDescription)"
         case .decodingError(let error):
             return "Decoding Error: \(error.localizedDescription)"
-        case .apiError(let weatherError):
-            return "API Error: \(weatherError.message)"
+        case .apiError(let message):
+            return "API Response Error: \(message)"
         }
     }
 }

@@ -39,22 +39,20 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
     // MARK: - Initializer
     init(urlSession: any URLSessionProtocol = URLSession(configuration: .default)) {
         self.urlSession = urlSession
-        guard let path = Bundle.main.path(forResource: "Keys", ofType: "plist"),
-              let keys = NSDictionary(contentsOfFile: path),
-              let accessKey = keys["FixerApiKey"] as? String,
-              let baseURL = keys["FixerApiURL"] as? String else {
-            fatalError("Unable to read keys from Keys.plist")
+        let path = Bundle.main.path(forResource: "Keys", ofType: "plist")!
+        let keys = NSDictionary(contentsOfFile: path)
+        let accessKey = keys!["FixerApiKey"] as? String
+        let baseURL = keys!["FixerApiURL"] as? String
+        self.accessKey = accessKey!
+        self.baseURL = baseURL!
+        getCurrencyCodes { [weak self] symbols in
+            self?.symbols = symbols
+            self?.delegate?.currencyDataDidUpdate()
+            self?.getRatesWithAPI { rates in
+                self?.rates = rates ?? [:]
+            }
+            self?.delegate?.currencyDataDidUpdate()
         }
-        self.accessKey = accessKey
-        self.baseURL = baseURL
-//        getCurrencyCodes { [weak self] symbols in
-//            self?.symbols = symbols
-//            self?.delegate?.currencyDataDidUpdate()
-//            self?.getRatesWithAPI { rates in
-//                self?.rates = rates ?? [:]
-//            }
-//            self?.delegate?.currencyDataDidUpdate()
-//        }
     }
     
     // MARK: - Methods
@@ -69,7 +67,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
             switch result {
             case .success(let symbols):
                 self?.symbols = symbols
-                completion(symbols)
+                completion(symbols) // here
             case .failure(let error):
                 print("Error fetching currency codes: \(error)")
                 completion([:])
@@ -81,10 +79,10 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         self.currencyCode = country
         
         if self.timestamp != 0, Date().timeIntervalSince1970 - Double(self.timestamp) < 86400 {
-            let exchangeRate = self.rates[country] ?? 0
+            let exchangeRate = self.rates[country]!
             let result = amount * exchangeRate
             let roundedResult = Double(round(100 * result) / 100)
-            completion(roundedResult)
+            completion(roundedResult) // here
         } else {
             convertWithAPI(amount: amount) { result in
                 switch result {
@@ -99,11 +97,8 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
     
     func convertWithAPI(amount: Double, completion: @escaping (Result<Double, Error>) -> Void) {
         let url = "\(baseURL)convert?to=\(currencyCode)&from=\(currencyBase)&amount=\(amount)"
-        guard let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
-              let apiURL = URL(string: encodedURL) else {
-            completion(.failure(CurrencyError.invalidURL))
-            return
-        }
+        let encodedURL = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+        let apiURL = URL(string: encodedURL)!
         
         var request = URLRequest(url: apiURL, timeoutInterval: Double.infinity)
         request.httpMethod = "GET"
@@ -150,7 +145,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
             
             let task = self.urlSession.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    completion(.failure(error))
+                    completion(.failure(error)) // here
                     return
                 }
                 
@@ -165,7 +160,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
                     let response = try decoder.decode(CurrencySymbolResponse.self, from: data)
                     completion(.success(response.symbols))
                 } catch {
-                    completion(.failure(error))
+                    completion(.failure(error)) // here
                 }
             }
             task.resume()
@@ -173,18 +168,14 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         
         func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void) {
             if !self.rates.isEmpty {
-                completion(self.rates)
+                completion(self.rates) // here
                 return
             }
             
             let currencyCodes = symbols.keys.joined(separator: ",")
             let url = "\(baseURL)latest?symbols=\(currencyCodes)&base=\(currencyBase)"
             
-            guard let apiURL = URL(string: url) else {
-                print("Invalid URL: \(url)")
-                completion(nil)
-                return
-            }
+            let apiURL = URL(string: url)!
             
             var request = URLRequest(url: apiURL, timeoutInterval: Double.infinity)
             request.httpMethod = "GET"

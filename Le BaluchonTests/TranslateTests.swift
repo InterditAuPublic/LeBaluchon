@@ -12,16 +12,19 @@ class TranslationServiceTests: XCTestCase {
     
     var translationService: TranslationServiceImplementation!
     var mockUrlSession: URLSessionMock!
+//    var mockKeyService: MockKeyService!
     
     
     override func setUp() {
         super.setUp()
+//        mockKeyService = MockKeyService()
         mockUrlSession = URLSessionMock()
         translationService = TranslationServiceImplementation(urlSession: mockUrlSession)
     }
     
     override func tearDown() {
         translationService = nil
+//        mockKeyService = nil
         mockUrlSession = nil
         super.tearDown()
     }
@@ -184,28 +187,34 @@ class TranslationServiceTests: XCTestCase {
         wait(for: [expectation], timeout: 0.5)
     }
 
-//    func test_getTranslation_failure_invalidURL() {
-//       // Given
-//        mockUrlSession.urlResponse = HTTPURLResponse(url: URL(string: "aeraera")!, statusCode: 200, httpVersion: nil, headerFields: nil)
-//                
-//       let translationRequest = TranslationRequest(source: "en", target: "fr", text: "Hello")
-//       let expectation = XCTestExpectation(description: "Invalid URL error")
-//       
-//       // When
-//       // Call the getTranslation method with the invalid URL
-//       translationService.getTranslation(request: translationRequest) { result in
-//           // Then
-//           switch result {
-//           case .success(let translationResponse):
-//               XCTFail("Expected failure, but got success: \(translationResponse)")
-//           case .failure(let error):
-//               XCTAssertNotNil(error)
-//               XCTAssertEqual(error, TranslationError.invalidURL)
-//               expectation.fulfill()
-//           }
-//       }
-//       
-//       wait(for: [expectation], timeout: 0.5)
-//   }
+
+    func test_getTranslation_failure_networkError() {
+        // Given
+        mockUrlSession.data = nil
+        mockUrlSession.error = NSError(domain: "MockErrorDomain", code: 123, userInfo: nil) // Simulez une erreur réseau
+        let translationRequest = TranslationRequest(source: "en", target: "fr", text: "Hello")
+        let expectation = XCTestExpectation()
+        
+        // When
+        translationService.getTranslation(request: translationRequest) { result in
+            // Then
+            switch result {
+            case .success(let translationResponse):
+                XCTFail("Expected failure, but got success: \(translationResponse)")
+                expectation.fulfill()
+            case .failure(let error):
+                XCTAssertNotNil(error)
+                if error == TranslationError.networkError {
+                    // L'erreur correspond à TranslationError.networkError
+                    expectation.fulfill()
+                } else {
+                    XCTFail("Expected TranslationError.networkError, but got \(error)")
+                    expectation.fulfill()
+                }
+            }
+        }
+        
+        wait(for: [expectation], timeout: 0.5)
+    }
 
 }
