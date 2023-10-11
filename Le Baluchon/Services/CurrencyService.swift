@@ -82,7 +82,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
             let exchangeRate = self.rates[country]!
             let result = amount * exchangeRate
             let roundedResult = Double(round(100 * result) / 100)
-            completion(roundedResult) // here
+            completion(roundedResult)
         } else {
             convertWithAPI(amount: amount) { result in
                 switch result {
@@ -145,7 +145,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
             
             let task = self.urlSession.dataTask(with: request) { data, response, error in
                 if let error = error {
-                    completion(.failure(error)) // here
+                    completion(.failure(error))
                     return
                 }
                 
@@ -160,7 +160,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
                     let response = try decoder.decode(CurrencySymbolResponse.self, from: data)
                     completion(.success(response.symbols))
                 } catch {
-                    completion(.failure(error)) // here
+                    completion(.failure(error))
                 }
             }
             task.resume()
@@ -168,7 +168,7 @@ class CurrencyServiceImplementation: CurrencyServiceProtocol {
         
         func getRatesWithAPI(completion: @escaping ([String: Double]?) -> Void) {
             if !self.rates.isEmpty {
-                completion(self.rates) // here
+                completion(self.rates)
                 return
             }
             

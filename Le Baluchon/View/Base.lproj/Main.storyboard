@@ -185,7 +185,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VMA-Bu-PkV">
-                                <rect key="frame" x="0.0" y="228.5" width="414" height="34.5"/>
+                                <rect key="frame" x="0.0" y="826.5" width="414" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="KQ3-9R-DPb"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Next" cornerStyle="dynamic">
                                     <backgroundConfiguration key="background">
@@ -200,14 +203,14 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Le Baluchon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YUN-FU-QLt">
                                 <rect key="frame" x="16" y="48" width="378" height="45"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="45" id="WOU-j0-hud"/>
+                                    <constraint firstAttribute="height" constant="45" id="eaT-jR-naN"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="24"/>
                                 <color key="textColor" systemColor="systemOrangeColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1A-Va-4EF">
-                                <rect key="frame" x="16" y="101" width="378" height="119.5"/>
+                                <rect key="frame" x="16" y="388.5" width="378" height="119.5"/>
                                 <string key="text">Welcome to Le Baluchon!
 This app will help you simplify your travel arrangements, giving you quick access to exchange rates, translations and weather forecasts, all in the palm of your hand.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
@@ -218,22 +221,22 @@ This app will help you simplify your travel arrangements, giving you quick acces
                         <viewLayoutGuide key="safeArea" id="dsE-3Y-UKf"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
-                            <constraint firstItem="b1A-Va-4EF" firstAttribute="top" secondItem="YUN-FU-QLt" secondAttribute="bottom" constant="8" symbolic="YES" id="9Ae-aE-1rP"/>
-                            <constraint firstItem="YUN-FU-QLt" firstAttribute="leading" secondItem="dsE-3Y-UKf" secondAttribute="leading" constant="16" id="BwU-Jv-guq"/>
-                            <constraint firstAttribute="trailing" secondItem="VMA-Bu-PkV" secondAttribute="trailing" id="F8a-rx-6v7"/>
-                            <constraint firstItem="b1A-Va-4EF" firstAttribute="trailing" secondItem="YUN-FU-QLt" secondAttribute="trailing" id="TiY-80-UDn"/>
-                            <constraint firstItem="YUN-FU-QLt" firstAttribute="trailing" secondItem="MVD-Up-J32" secondAttribute="trailingMargin" id="cCm-9Y-OUf"/>
-                            <constraint firstItem="VMA-Bu-PkV" firstAttribute="leading" secondItem="MVD-Up-J32" secondAttribute="leading" id="g38-pW-yVA"/>
-                            <constraint firstItem="VMA-Bu-PkV" firstAttribute="top" secondItem="b1A-Va-4EF" secondAttribute="bottom" constant="8" symbolic="YES" id="jeu-eF-1vN"/>
-                            <constraint firstItem="YUN-FU-QLt" firstAttribute="top" secondItem="dsE-3Y-UKf" secondAttribute="top" id="tSB-pN-tsM"/>
-                            <constraint firstItem="b1A-Va-4EF" firstAttribute="leading" secondItem="YUN-FU-QLt" secondAttribute="leading" id="uSL-FM-f6d"/>
+                            <constraint firstItem="YUN-FU-QLt" firstAttribute="leading" secondItem="b1A-Va-4EF" secondAttribute="leading" id="0UQ-nG-G9e"/>
+                            <constraint firstItem="VMA-Bu-PkV" firstAttribute="leading" secondItem="MVD-Up-J32" secondAttribute="leading" id="EHS-iQ-yVJ"/>
+                            <constraint firstItem="YUN-FU-QLt" firstAttribute="leading" secondItem="dsE-3Y-UKf" secondAttribute="leading" constant="16" id="L2n-os-7F6"/>
+                            <constraint firstItem="YUN-FU-QLt" firstAttribute="top" secondItem="dsE-3Y-UKf" secondAttribute="top" id="NUH-rH-XhD"/>
+                            <constraint firstAttribute="trailing" secondItem="VMA-Bu-PkV" secondAttribute="trailing" id="OkK-d0-Vvg"/>
+                            <constraint firstItem="YUN-FU-QLt" firstAttribute="trailing" secondItem="MVD-Up-J32" secondAttribute="trailingMargin" id="bzd-oz-qck"/>
+                            <constraint firstItem="YUN-FU-QLt" firstAttribute="trailing" secondItem="b1A-Va-4EF" secondAttribute="trailing" id="dTT-LH-4gc"/>
+                            <constraint firstItem="b1A-Va-4EF" firstAttribute="centerY" secondItem="MVD-Up-J32" secondAttribute="centerY" id="eZW-43-Vsl"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="VMA-Bu-PkV" secondAttribute="bottom" constant="-4.5" id="tHE-MH-exv"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ObF-6R-67r"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yjr-YR-Fcs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3616.030534351145" y="457.74647887323948"/>
+            <point key="canvasLocation" x="-3617.3913043478265" y="457.36607142857139"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="DJs-OD-FpD">
@@ -283,25 +286,35 @@ This app will help you simplify your travel arrangements, giving you quick acces
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jRg-rA-zgh">
-                                <rect key="frame" x="20" y="379.5" width="374" height="34"/>
+                                <rect key="frame" x="20" y="221" width="374" height="34"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="center" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tqO-t9-TAr">
-                                <rect key="frame" x="20" y="337.5" width="374" height="34"/>
+                                <rect key="frame" x="20" y="179" width="374" height="34"/>
                                 <edgeInsets key="layoutMargins" top="8" left="8" bottom="8" right="8"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hyu-qu-fIW">
-                                <rect key="frame" x="186.5" y="292" width="41" height="20.5"/>
+                                <rect key="frame" x="187" y="74" width="41" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
+                                <rect key="frame" x="11" y="243" width="393" height="162"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="YES"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="393" id="Feu-d2-j53"/>
+                                    <constraint firstAttribute="height" constant="162" id="HUc-Jx-ELe"/>
+                                </constraints>
+                            </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YYi-EX-XC3">
-                                <rect key="frame" x="288.5" y="679" width="72.5" height="58"/>
+                                <rect key="frame" x="170.5" y="789" width="73" height="58"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="58" id="YM8-Ik-ZhC"/>
                                 </constraints>
@@ -316,33 +329,22 @@ This app will help you simplify your travel arrangements, giving you quick acces
                                     <action selector="getRateTapped:" destination="1zU-Hv-7vS" eventType="touchUpInside" id="NUp-vh-BPA"/>
                                 </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kib-7M-jN3">
-                                <rect key="frame" x="10.5" y="421.5" width="393" height="162"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <bool key="isElement" value="YES"/>
-                                </accessibility>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="393" id="Feu-d2-j53"/>
-                                    <constraint firstAttribute="height" constant="162" id="HUc-Jx-ELe"/>
-                                </constraints>
-                            </pickerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="JRg-hy-mZ0"/>
                         <color key="backgroundColor" systemColor="systemGray5Color"/>
                         <constraints>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="tqO-t9-TAr" secondAttribute="leading" id="1pg-gY-b0r"/>
-                            <constraint firstItem="YYi-EX-XC3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Nzo-7o-WPD" secondAttribute="leadingMargin" id="90u-6r-PuI"/>
-                            <constraint firstItem="Hyu-qu-fIW" firstAttribute="top" secondItem="Nzo-7o-WPD" secondAttribute="top" constant="292" id="AwD-4Z-sOf"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="YYi-EX-XC3" secondAttribute="trailing" constant="33" id="Ekc-8B-No8"/>
-                            <constraint firstItem="kib-7M-jN3" firstAttribute="centerX" secondItem="jRg-rA-zgh" secondAttribute="centerX" id="GYw-kI-09a"/>
-                            <constraint firstItem="YYi-EX-XC3" firstAttribute="top" secondItem="kib-7M-jN3" secondAttribute="bottom" constant="95.5" id="MVq-of-w88"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="Nzo-7o-WPD" secondAttribute="leadingMargin" id="NDi-fb-GRF"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="top" secondItem="tqO-t9-TAr" secondAttribute="bottom" constant="8" symbolic="YES" id="PIl-fh-ndc"/>
-                            <constraint firstItem="kib-7M-jN3" firstAttribute="top" secondItem="jRg-rA-zgh" secondAttribute="bottom" constant="8" id="eAq-rk-Lxm"/>
-                            <constraint firstItem="Hyu-qu-fIW" firstAttribute="centerX" secondItem="JRg-hy-mZ0" secondAttribute="centerX" id="f8k-Sv-Lcn"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="centerX" secondItem="Hyu-qu-fIW" secondAttribute="centerX" id="gIv-fp-MRs"/>
-                            <constraint firstItem="jRg-rA-zgh" firstAttribute="trailing" secondItem="tqO-t9-TAr" secondAttribute="trailing" id="hsC-qa-Uhw"/>
-                            <constraint firstItem="tqO-t9-TAr" firstAttribute="top" secondItem="Hyu-qu-fIW" secondAttribute="bottom" constant="25" id="nQT-1A-sfv"/>
+                            <constraint firstItem="jRg-rA-zgh" firstAttribute="top" secondItem="Nzo-7o-WPD" secondAttribute="top" constant="221" id="1uS-px-XO2"/>
+                            <constraint firstItem="jRg-rA-zgh" firstAttribute="trailing" secondItem="tqO-t9-TAr" secondAttribute="trailing" id="ByV-4I-fQu"/>
+                            <constraint firstItem="YYi-EX-XC3" firstAttribute="centerX" secondItem="JRg-hy-mZ0" secondAttribute="centerX" id="Fpg-Wj-8J1"/>
+                            <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="Nzo-7o-WPD" secondAttribute="leadingMargin" id="HAu-5o-eqa"/>
+                            <constraint firstItem="jRg-rA-zgh" firstAttribute="top" secondItem="tqO-t9-TAr" secondAttribute="bottom" constant="8" id="Lcy-wL-g1U"/>
+                            <constraint firstItem="JRg-hy-mZ0" firstAttribute="bottom" secondItem="YYi-EX-XC3" secondAttribute="bottom" id="Nzc-AF-i4W"/>
+                            <constraint firstItem="Hyu-qu-fIW" firstAttribute="centerX" secondItem="tqO-t9-TAr" secondAttribute="centerX" id="OHH-ei-OLN"/>
+                            <constraint firstItem="tqO-t9-TAr" firstAttribute="centerX" secondItem="kib-7M-jN3" secondAttribute="centerX" id="PBi-Ei-Cuq"/>
+                            <constraint firstItem="JRg-hy-mZ0" firstAttribute="centerX" secondItem="kib-7M-jN3" secondAttribute="centerX" id="dbY-5T-vlq"/>
+                            <constraint firstItem="Hyu-qu-fIW" firstAttribute="top" secondItem="JRg-hy-mZ0" secondAttribute="top" constant="30" id="jgP-Oa-8Ss"/>
+                            <constraint firstItem="kib-7M-jN3" firstAttribute="top" secondItem="tqO-t9-TAr" secondAttribute="bottom" constant="30" id="kui-k2-glx"/>
+                            <constraint firstItem="jRg-rA-zgh" firstAttribute="leading" secondItem="tqO-t9-TAr" secondAttribute="leading" id="tLP-ht-uaO"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Currency Converter" id="eam-t4-5qS"/>

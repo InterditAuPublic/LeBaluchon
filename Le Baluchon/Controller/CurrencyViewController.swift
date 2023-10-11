@@ -120,28 +120,49 @@ class CurrencyViewController: UIViewController, UIPickerViewDelegate, UIPickerVi
         currencyCodeTextField.resignFirstResponder()
         
         guard let amountText = amountTextField.text,
-              !amountText.isEmpty,
-              let amount = Double(amountText),
-              let country = currencyCodeTextField.text,
-              !country.isEmpty
-        else {
-            UIAlertHelper.showAlertWithTitle("Error", message: "Please provide both Amount and Currency Code.", from: self)
-            usdAmountLabel.text = "Error: Invalid input"
-            getRate.setTitle("Convert", for: .normal)
-            getRate.configuration?.showsActivityIndicator = false
-            return
-        }
+                  let amount = Double(amountText),
+                  !amount.isNaN,
+                  !amountText.isEmpty,
+                  let country = currencyCodeTextField.text,
+                  !country.isEmpty
+            else {
+                // Cas où l'utilisateur a saisi du texte, n'a rien saisi ou n'a pas saisi de code de devise
+                var errorMessage = ""
+            let isAmountEmpty = amountTextField.text?.isEmpty
+            let isCountryEmpty = currencyCodeTextField.text?.isEmpty
+                let isAmountNaN = amount.isNaN
+                
+                switch (isAmountEmpty, isCountryEmpty, isAmountNaN) {
+                case (true, true, _):
+                    errorMessage = "Please provide both Amount and Currency Code."
+                case (true, _, _):
+                    errorMessage = "Please provide a valid Amount."
+                case (_, true, _):
+                    errorMessage = "Please provide a valid Currency Code."
+                case (_, _, true):
+                    errorMessage = "Amount must be a valid number."
+                default:
+                    errorMessage = "Invalid input."
+                }
+                
+                UIAlertHelper.showAlertWithTitle("Error", message: errorMessage, from: self)
+                usdAmountLabel.text = "Error: \(errorMessage)"
+                getRate.setTitle("Convert", for: .normal)
+                getRate.configuration?.showsActivityIndicator = false
+                return
+            }
         
         currencyService.convert(amount: amount, country: country) { usdAmount in
-            DispatchQueue.main.async { [self] in
-                if let usdAmount = usdAmount {
-                    usdAmountLabel.text = "\(usdAmount) \(country)"
-                } else {
-                    UIAlertHelper.showAlertWithTitle("Error", message: "Oops, something went wrong. Please try again later.", from: self)
-                    usdAmountLabel.text = "Error"
+                DispatchQueue.main.async { [self] in
+                    if let usdAmount = usdAmount {
+                        usdAmountLabel.text = "\(usdAmount) \(country)"
+                    } else {
+                        
+                        UIAlertHelper.showAlertWithTitle("Error", message: "Something went wrong", from: self)
+                        usdAmountLabel.text = "Error"
+                    }
                 }
             }
-        }
         getRate.setTitle("Convert", for: .normal)
         getRate.configuration?.showsActivityIndicator = false
     }

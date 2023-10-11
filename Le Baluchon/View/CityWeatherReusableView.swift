@@ -69,6 +69,10 @@ func prepareView() {
     tempLabel.textColor = .white
     descriptionLabel.font = UIFont.boldSystemFont(ofSize: 20)
     descriptionLabel.textColor = .white
+
+//
+    descriptionLabel.numberOfLines = 0
+
     sunriseLabel.font = UIFont.boldSystemFont(ofSize: 20)
     sunriseLabel.textColor = .white
     sunsetLabel.font = UIFont.boldSystemFont(ofSize: 20)
@@ -120,10 +124,8 @@ weatherService.getWeather(city: city) { [weak self] result in
         switch result {
         case .success(let weatherResponse):
             self.updateView(weather: weatherResponse)
-        case .failure(_):
-            if let vc = self.vc {
-                UIAlertHelper.showAlertWithTitle("Oups!", message: "Sorry, something went wrong. Please try again later.", from: vc)
-            }
+        case .failure(let error):
+            self.updateViewWithError(error)
         }
     }
 }
@@ -140,6 +142,19 @@ func updateView(weather: WeatherResponse) {
     sunriseIcon.image = UIImage(systemName: "sunrise")
     sunsetIcon.image = UIImage(systemName: "sunset")
     windIcon.image = UIImage(systemName: "wind.circle")
+}
+
+func updateViewWithError(_ error: Error) {
+    cityLabel.text = "Error"
+    descriptionLabel.text = error.localizedDescription
+    windLabel.text = "N/A"
+    sunriseLabel.text = "N/A"
+    sunsetLabel.text = "N/A"
+    tempLabel.text = "0°C"
+    weatherIcon.image = UIImage(systemName: "exclamationmark.triangle")
+    sunriseIcon.image = UIImage(systemName: "exclamationmark.triangle")
+    sunsetIcon.image = UIImage(systemName: "exclamationmark.triangle")
+    windIcon.image = UIImage(systemName: "exclamationmark.triangle")
 }
 
 // convert unix timestamp to time string for sunrise and sunset labels (HH:mm) that takes into account the timezone
