@@ -38,7 +38,7 @@ func getWeather(city: String, completion: @escaping (Result<WeatherResponse, Wea
 }
 
 func getWeatherFromAPI(city: String, completion: @escaping (Result<WeatherResponse, WeatherServiceError>) -> Void) {
-    let url = WeatherRequest(city: "zrfrzrz", accessKey: accessKey, baseURL: baseURL).url!
+    let url = WeatherRequest(city: city, accessKey: accessKey, baseURL: baseURL).url!
     task?.cancel()
     let urlRequest = URLRequest(url: url)
     task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
